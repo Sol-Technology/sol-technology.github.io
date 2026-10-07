@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --color-solar: #F59E0B;
+  --color-solar-dark: #D97706;
+  --color-ink: #0B1F33;
+  --color-ink-2: #122B45;
+  --color-deep: #1E3A5F;
+  --color-sky: #38BDF8;
+  --color-mist: #F6F7F9;
+  --color-line: #E3E7EC;
+  --color-muted: #5B6B7B;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html { scroll-behavior: smooth; }
+body { @apply bg-white text-ink antialiased font-sans; }
+
+.prose-legal h1 { @apply text-3xl font-bold tracking-tight mb-2; }
+.prose-legal h2 { @apply text-xl font-semibold mt-10 mb-3; }
+.prose-legal h3 { @apply text-lg font-semibold mt-6 mb-2; }
+.prose-legal p, .prose-legal li { @apply text-[15px] leading-7 text-ink/85; }
+.prose-legal ul { @apply list-disc pl-6 space-y-1 my-3; }
+.prose-legal ol { @apply list-decimal pl-6 space-y-1 my-3; }
+.prose-legal a { @apply text-deep underline underline-offset-2 hover:text-solar-dark; }
+.prose-legal table { @apply w-full text-sm my-4 border-collapse; }
+.prose-legal th, .prose-legal td { @apply border border-line px-3 py-2 text-left align-top; }
+.prose-legal th { @apply bg-mist font-semibold; }
+.prose-legal code { @apply font-mono text-[13px] bg-mist px-1.5 py-0.5 rounded; }

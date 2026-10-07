@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#0B1F33"/>
+  <g transform="translate(120,165) scale(3)"><polyline points="43.03,19.79 50.00,6.00 56.97,19.79" fill="none" stroke="#FFFFFF" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+  <polyline points="69.27,25.72 84.40,22.57 77.96,36.62" fill="none" stroke="#FFFFFF" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+  <polyline points="81.00,49.92 92.90,59.79 77.90,63.52" fill="none" stroke="#FFFFFF" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+  <polyline points="69.39,74.19 69.09,89.64 56.82,80.24" fill="none" stroke="#FFFFFF" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+  <polyline points="43.18,80.24 30.91,89.64 30.61,74.19" fill="none" stroke="#FFFFFF" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+  <polyline points="22.10,63.52 7.10,59.79 19.00,49.92" fill="none" stroke="#FFFFFF" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+  <polyline points="22.04,36.62 15.60,22.57 30.73,25.72" fill="none" stroke="#FFFFFF" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+  <g transform="translate(50,50) rotate(-32) scale(1.6) translate(-12.5,-12)"><path d="M2 21 L23 12 L2 3 L2 10 L17 12 L2 14 Z" fill="none" stroke="#F59E0B" stroke-width="2.6" stroke-linejoin="round"/></g></g>
+  <text x="480" y="290" font-family="Inter, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" font-size="96" font-weight="700" letter-spacing="-2.9" fill="#FFFFFF">AvroConvert</text>
+  <text x="484" y="345" font-family="Inter, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" font-size="30" fill="#9FB0C0">Rapid Apache Avro serializer for .NET</text>
+  <text x="484" y="560" font-family="Inter, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" font-size="26" font-weight="700" fill="#F59E0B">sol<tspan font-weight="400" fill="#9FB0C0">technology</tspan><tspan fill="#7F91A3">.dev</tspan></text>
+</svg>

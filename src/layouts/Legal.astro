@@ -1,0 +1,10 @@
+---
+import Base from "./Base.astro";
+const { frontmatter } = Astro.props;
+---
+<Base title={frontmatter.title} description={frontmatter.description}>
+  <article class="mx-auto max-w-3xl px-5 py-14 prose-legal">
+    <p class="text-xs uppercase tracking-wider text-muted mb-3">Legal · last updated {frontmatter.updated}</p>
+    <slot />
+  </article>
+</Base>

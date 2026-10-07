@@ -1,0 +1,41 @@
+---
+import { site } from "../config";
+const year = new Date().getFullYear();
+---
+<footer class="mt-24 border-t border-line bg-mist">
+  <div class="mx-auto max-w-6xl px-5 py-12 grid gap-10 md:grid-cols-4 text-sm">
+    <div class="md:col-span-2">
+      <a href="/" class="flex items-center gap-3" aria-label={site.name}>
+        <img src="/brand/mark.svg" alt="" width="30" height="30" />
+        <span class="text-lg tracking-tight"><span class="font-bold text-solar">sol</span><span>technology</span></span>
+      </a>
+      <p class="mt-4 text-muted max-w-sm">{site.tagline}. Libraries you can read, benchmark and ship.</p>
+      <p class="mt-4 text-muted text-xs leading-5">
+        {site.legalName}<br />{site.legalAddress}<br />{site.legalTaxId}
+      </p>
+    </div>
+    <div>
+      <h3 class="font-semibold mb-3">Products</h3>
+      <ul class="space-y-2 text-muted">
+        <li><a class="hover:text-ink" href="/avroconvert">AvroConvert</a></li>
+        <li><a class="hover:text-ink" href="/avroconvert#pricing">Pricing</a></li>
+        <li><a class="hover:text-ink" href={site.github} target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="font-semibold mb-3">Legal</h3>
+      <ul class="space-y-2 text-muted">
+        <li><a class="hover:text-ink" href="/terms">Terms &amp; Conditions</a></li>
+        <li><a class="hover:text-ink" href="/refunds">Refund Policy</a></li>
+        <li><a class="hover:text-ink" href="/privacy">Privacy Policy</a></li>
+        <li><a class="hover:text-ink" href="/contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-line">
+    <div class="mx-auto max-w-6xl px-5 py-5 text-xs text-muted flex flex-col md:flex-row gap-2 md:items-center md:justify-between">
+      <span>© {year} {site.legalName}. All rights reserved.</span>
+      <span>Orders are processed by our reseller and Merchant of Record, Paddle.com.</span>
+    </div>
+  </div>
+</footer>

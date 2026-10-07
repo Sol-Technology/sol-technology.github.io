@@ -1,0 +1,26 @@
+---
+import Base from "../layouts/Base.astro";
+import { site } from "../config";
+---
+<Base title="Contact" description="Contact SolTechnology about licences, support and partnerships.">
+  <section class="mx-auto max-w-3xl px-5 py-16">
+    <h1 class="text-3xl font-bold tracking-tight">Contact</h1>
+    <div class="mt-8 grid gap-6 md:grid-cols-2">
+      <div class="rounded-2xl border border-line p-6">
+        <h2 class="font-semibold">Sales &amp; licensing</h2>
+        <p class="mt-2 text-muted text-[15px]">Quotes, purchase orders, bank transfers, multi-product bundles.</p>
+        <a class="mt-4 inline-block font-medium text-deep underline" href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>
+      </div>
+      <div class="rounded-2xl border border-line p-6">
+        <h2 class="font-semibold">Technical support</h2>
+        <p class="mt-2 text-muted text-[15px]">Licence holders: e-mail with your licence key. Everyone: GitHub issues are welcome.</p>
+        <a class="mt-4 inline-block font-medium text-deep underline" href={`mailto:${site.supportEmail}`}>{site.supportEmail}</a>
+      </div>
+    </div>
+    <div class="mt-8 rounded-2xl bg-mist p-6 text-[15px]">
+      <h2 class="font-semibold">Orders, invoices and refunds</h2>
+      <p class="mt-2 text-ink/80">Purchases are processed by Paddle.com Market Ltd, our reseller and Merchant of Record. For receipts, invoice changes or refund requests you can also contact Paddle directly at <a class="underline" href="https://paddle.net" target="_blank" rel="noopener">paddle.net</a>.</p>
+    </div>
+    <p class="mt-10 text-xs text-muted">{site.legalName} · {site.legalAddress} · {site.legalTaxId}</p>
+  </section>
+</Base>

@@ -1,0 +1,69 @@
+---
+import Base from "../layouts/Base.astro";
+import { site, products } from "../config";
+---
+<Base title={site.name} description={site.tagline}>
+  <section class="bg-ink text-white">
+    <div class="mx-auto max-w-6xl px-5 py-24 grid gap-12 md:grid-cols-[1.2fr_1fr] items-center">
+      <div>
+        <p class="text-solar font-medium tracking-wide text-sm uppercase mb-4">.NET libraries</p>
+        <h1 class="text-4xl md:text-5xl font-bold tracking-tight leading-[1.1]">
+          Fast, readable data serialization for .NET.
+        </h1>
+        <p class="mt-6 text-lg text-white/75 max-w-xl">
+          SolTechnology builds focused libraries for data pipelines and microservices: Apache Avro serialization, schema tooling and integrations for Kafka and HTTP. Open source for individuals and small teams, licensed for companies.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/avroconvert" class="inline-flex items-center rounded-lg bg-solar px-5 py-3 font-semibold text-ink hover:bg-solar-dark transition">Explore AvroConvert</a>
+          <a href={site.github} target="_blank" rel="noopener" class="inline-flex items-center rounded-lg border border-white/20 px-5 py-3 font-medium hover:bg-white/10 transition">GitHub</a>
+        </div>
+      </div>
+      <div class="flex justify-center md:justify-end">
+        <img src="/brand/mark-animated-dark.svg" alt="" width="260" height="260" class="drop-shadow-[0_0_40px_rgba(245,158,11,0.25)]" />
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-5 py-20">
+    <h2 class="text-2xl font-bold tracking-tight">Products</h2>
+    <div class="mt-8 grid gap-6 md:grid-cols-2">
+      {products.map((p) => (
+        <a href={`/${p.slug}`} class="group rounded-2xl border border-line p-7 hover:border-ink/30 hover:shadow-sm transition">
+          <div class="flex items-center gap-4">
+            <img src={p.mark} alt="" width="56" height="56" />
+            <div>
+              <h3 class="text-xl font-semibold group-hover:text-deep">{p.name}</h3>
+              <p class="text-muted text-sm">{p.short}</p>
+            </div>
+          </div>
+          <p class="mt-5 text-[15px] text-ink/80">{p.description}</p>
+          <dl class="mt-6 grid grid-cols-3 gap-3 text-sm">
+            <div><dt class="text-muted">NuGet downloads</dt><dd class="font-semibold">{p.stats.downloads}</dd></div>
+            <div><dt class="text-muted">Per day</dt><dd class="font-semibold">{p.stats.perDay}</dd></div>
+            <div><dt class="text-muted">Since</dt><dd class="font-semibold">{p.stats.since}</dd></div>
+          </dl>
+        </a>
+      ))}
+      <div class="rounded-2xl border border-dashed border-line p-7 text-muted flex items-center">
+        <p>More libraries are on the way. Follow <a class="underline hover:text-ink" href={site.github} target="_blank" rel="noopener">GitHub</a> for announcements.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-mist">
+    <div class="mx-auto max-w-6xl px-5 py-20 grid gap-10 md:grid-cols-3">
+      <div>
+        <h3 class="font-semibold text-lg">Free where it should be</h3>
+        <p class="mt-2 text-muted text-[15px]">Noncommercial use and small businesses under 100 people and USD 1M revenue use every library at no cost, with no feature gates.</p>
+      </div>
+      <div>
+        <h3 class="font-semibold text-lg">Licensed for companies</h3>
+        <p class="mt-2 text-muted text-[15px]">Annual per-organisation licences with perpetual fallback: any version released while you are subscribed stays yours.</p>
+      </div>
+      <div>
+        <h3 class="font-semibold text-lg">Source you can audit</h3>
+        <p class="mt-2 text-muted text-[15px]">All code is public on GitHub, with benchmarks and tests. No telemetry, no phoning home, no hidden runtime checks.</p>
+      </div>
+    </div>
+  </section>
+</Base>
