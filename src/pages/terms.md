@@ -23,7 +23,7 @@ The full text of each licence ships with the software and is available in the pr
 
 ## 2. Commercial Licence – scope
 
-1. The Commercial Licence is granted to the purchasing organisation (the "Licensee"), covers all legal entities under its control, and is limited to the number of developers stated in the purchased tier (Business: up to 25; Enterprise: unlimited). A "developer" is any person who writes or modifies code that references the software.
+1. The Commercial Licence is granted to the purchasing organisation (the "Licensee"), covers all legal entities under its control, and is limited to the number of developers stated in the purchased tier (Team: up to 10; Business and Enterprise: unlimited). A "developer" is any person who writes or modifies code that references the software.
 2. The Licensee may use, copy and deploy the software in any number of applications, servers, containers and environments, including redistribution as part of the Licensee's own products, provided the software is not offered as a standalone library or competing product.
 3. The Licensee may not remove licence notices, sublicense the software on its own, or share licence keys outside the Licensee's organisation.
 
