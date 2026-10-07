@@ -2,7 +2,7 @@ export const site = {
   name: "SolTechnology",
   domain: "soltechnology.dev",
   url: "https://soltechnology.dev",
-  tagline: "Rapid .NET libraries",
+  tagline: ".NET libraries and engineering services: cloud migrations, system analysis, high-performance data",
   contactEmail: "contact@soltechnology.dev",
   supportEmail: "support@soltechnology.dev",
   github: "https://github.com/sol-technology",

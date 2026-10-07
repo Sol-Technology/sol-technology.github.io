@@ -87,7 +87,7 @@ write("og-image.svg", svg(1200, 630,
       f'<rect width="1200" height="630" fill="{INK}"/>\n  '
       f'<g transform="translate(120,165) scale(3)">{mark_body(WHITE, SOLAR)}</g>\n  '
       f'<text x="480" y="315" font-family="{FONT}" font-size="96" font-weight="700" letter-spacing="-2.9" fill="{SOLAR}">sol<tspan font-weight="400" fill="{WHITE}">technology</tspan></text>\n  '
-      f'<text x="482" y="380" font-family="{FONT}" font-size="30" fill="#9FB0C0">Rapid .NET libraries</text>\n  '
+      f'<text x="482" y="380" font-family="{FONT}" font-size="30" fill="#9FB0C0">.NET libraries · Cloud migrations · System analysis</text>\n  '
       f'<text x="482" y="560" font-family="{FONT}" font-size="26" fill="#7F91A3">soltechnology.dev</text>'))
 
 # rasters
