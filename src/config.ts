@@ -7,9 +7,9 @@ export const site = {
   supportEmail: "support@soltechnology.dev",
   github: "https://github.com/sol-technology",
   // Legal entity shown in Terms (Paddle Domain Review requires the sole proprietor's legal name)
-  legalName: "SolTechnology Adrian Strugała",
-  legalAddress: "[Street, Postal code City], Poland",
-  legalTaxId: "NIP [●]",
+  legalName: "Adrian Strugala SolTechnology",
+  legalAddress: "Młodych Techników 4/38, 53-646 Wrocław, Poland",
+  legalTaxId: "NIP 8971889807",
 };
 
 // Paddle Billing. Leave token empty until the Paddle account is live; buttons fall back to e-mail.
