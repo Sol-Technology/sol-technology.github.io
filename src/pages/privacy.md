@@ -36,7 +36,7 @@ We do not sell personal data and do not use it for third-party marketing.
 
 ## 4. Support and contact
 
-E-mails sent to our addresses are processed to answer your request (legitimate interest / contract). E-mail is hosted by [provider – to be confirmed]. GitHub issues and discussions are public and governed by GitHub's terms.
+E-mails sent to our addresses are processed to answer your request (legitimate interest / contract). Incoming e-mail is routed by **Cloudflare Email Routing** (which does not store message content) to a mailbox hosted by **Google (Gmail)**. GitHub issues and discussions are public and governed by GitHub's terms.
 
 ## 5. Retention
 
@@ -44,7 +44,7 @@ Order and licence records are kept for the duration of the licence relationship 
 
 ## 6. Recipients and transfers
 
-Processors and independent controllers involved: Paddle (UK/US; EU Standard Contractual Clauses and UK adequacy), GitHub (US; EU–US Data Privacy Framework), Cloudflare (US; DPF), Google Fonts (US; DPF). We do not transfer data outside these services.
+Processors and independent controllers involved: Paddle (UK/US; EU Standard Contractual Clauses and UK adequacy), GitHub (US; EU–US Data Privacy Framework), Cloudflare (US; DPF), Google – Gmail and Google Fonts (US; DPF). We do not transfer data outside these services.
 
 ## 7. Your rights
 
