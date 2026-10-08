@@ -155,6 +155,11 @@ if Path(CHROME).exists():
                             ("avroconvert-favicon-16.png", 16, "avroconvert-mark-small.svg"),
                             ("avroconvert-favicon-32.png", 32, "avroconvert-mark-small.svg"),
                             ("avroconvert-favicon-48.png", 48, "avroconvert-mark-small.svg"),
+                            ("favicon-dark-16.png", 16, "mark-small-dark.svg"), ("favicon-dark-32.png", 32, "mark-small-dark.svg"),
+                            ("favicon-dark-48.png", 48, "mark-small-dark.svg"),
+                            ("avroconvert-favicon-dark-16.png", 16, "avroconvert-mark-small-dark.svg"),
+                            ("avroconvert-favicon-dark-32.png", 32, "avroconvert-mark-small-dark.svg"),
+                            ("avroconvert-favicon-dark-48.png", 48, "avroconvert-mark-small-dark.svg"),
                             ("avroconvert-nuget-128.png", 128, "avroconvert-app-icon.svg"),
                             ("avroconvert-icon-512.png", 512, "avroconvert-app-icon.svg")):
         tmp = f"_tmp_{size}.svg"
