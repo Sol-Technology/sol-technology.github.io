@@ -14,11 +14,11 @@ export const site = {
 
 // Paddle Billing. Leave token empty until the Paddle account is live; buttons fall back to e-mail.
 export const paddle = {
-  environment: "sandbox" as "sandbox" | "production",
-  clientToken: "",
+  environment: "production" as "sandbox" | "production",
+  clientToken: "live_ec07c55527f273e2c7442ad3eaf",
   prices: {
-    avroconvertBusiness: "",
-    avroconvertEnterprise: "",
+    avroconvertBusiness: "pri_01m4brjga04ft4m98zxaz848tg",
+    avroconvertEnterprise: "pri_01m4brm8gex8ahxrepqefgc7jm",
   },
 };
 
