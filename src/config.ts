@@ -59,7 +59,7 @@ export const pricing = {
     {
       id: "business",
       name: "Business",
-      price: 189,
+      price: 199,
       period: "per organisation / year",
       for: "Companies above the Community threshold",
       bullets: [
@@ -75,7 +75,7 @@ export const pricing = {
     {
       id: "enterprise",
       name: "Enterprise",
-      price: 1299,
+      price: 1499,
       period: "per organisation / year",
       for: "Support with response times, procurement-friendly purchasing",
       bullets: [
