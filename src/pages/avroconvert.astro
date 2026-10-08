@@ -98,12 +98,37 @@ const features = [
 
   {paddleReady && (
     <>
+      <dialog id="licensee-dialog" class="rounded-2xl border border-line p-0 w-[min(28rem,calc(100vw-2rem))] backdrop:bg-ink/40">
+        <form method="dialog" class="p-7">
+          <h3 class="text-lg font-semibold">Who is the licence for?</h3>
+          <p class="mt-1 text-sm text-muted">The organisation name printed on the licence certificate and embedded in the key. Use the legal name of the company that will use AvroConvert.</p>
+          <label class="block mt-5 text-sm font-medium" for="licensee">Organisation name</label>
+          <input id="licensee" name="licensee" type="text" required minlength="2" maxlength="120" autocomplete="organization" placeholder="Acme Ltd." class="mt-1 w-full rounded-lg border border-line px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-solar/40" />
+          <div class="mt-6 flex gap-3 justify-end">
+            <button type="button" value="cancel" class="rounded-lg border border-line px-4 py-2.5 font-medium hover:bg-mist transition" data-cancel>Cancel</button>
+            <button type="submit" value="checkout" class="rounded-lg bg-ink text-white px-4 py-2.5 font-semibold hover:bg-ink-2 transition">Continue to checkout</button>
+          </div>
+        </form>
+      </dialog>
       <script is:inline src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
       <script is:inline define:vars={{ env: paddle.environment, token: paddle.clientToken }}>
         if (env === "sandbox") Paddle.Environment.set("sandbox");
         Paddle.Initialize({ token });
+
+        const dialog = document.getElementById("licensee-dialog");
+        const form = dialog.querySelector("form");
+        const input = dialog.querySelector("#licensee");
+        let priceId = null;
+
         document.querySelectorAll("[data-paddle-price]").forEach((b) =>
-          b.addEventListener("click", () => Paddle.Checkout.open({ items: [{ priceId: b.dataset.paddlePrice, quantity: 1 }] })));
+          b.addEventListener("click", () => { priceId = b.dataset.paddlePrice; dialog.showModal(); input.focus(); }));
+        dialog.querySelector("[data-cancel]").addEventListener("click", () => dialog.close());
+        form.addEventListener("submit", () => {
+          // Read by the licensing Worker from transaction.custom_data.licensee.
+          const licensee = input.value.trim();
+          if (!licensee) return;
+          Paddle.Checkout.open({ items: [{ priceId, quantity: 1 }], customData: { licensee } });
+        });
       </script>
     </>
   )}
