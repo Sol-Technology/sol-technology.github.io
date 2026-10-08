@@ -64,8 +64,7 @@ write("mark-small-dark.svg", svg(100, 100, mark_body(WHITE, SOLAR, filled_core=T
 write("mark-animated.svg", svg(100, 100, mark_body(INK, SOLAR, anim=True)))
 write("mark-animated-dark.svg", svg(100, 100, mark_body(WHITE, SOLAR, anim=True)))
 # favicons switch chevrons to white on dark browser chrome (tab bars), where navy would vanish
-FAVICON_DARK = "<style>@media (prefers-color-scheme: dark) { polyline { stroke: #FFFFFF; } }</style>
-  "
+FAVICON_DARK = "<style>@media (prefers-color-scheme: dark) { polyline { stroke: #FFFFFF; } }</style>\n  "
 write("favicon.svg", svg(100, 100, FAVICON_DARK + mark_body(INK, SOLAR, filled_core=True, sw=9)))
 
 # logos
@@ -181,6 +180,20 @@ if Path(CHROME).exists():
         body = (OUT / src).read_text().split("\n", 1)[1].rsplit("</svg>", 1)[0]
         write("_tmp.svg", f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="1024" height="1024">{body}</svg>')
         shot("_tmp.svg", OUT / name, 1024, 1024)
+        (OUT / "_tmp.svg").unlink()
+    # opaque white high-res: avatars/tiles for surfaces that flatten transparency (GitHub, NuGet, Slack, Marketplace)
+    for name, body in (("github-avatar-white.svg", mark_body(INK, SOLAR, sw=8)),
+                       ("avroconvert-avatar-white.svg", product_mark(INK, SOLAR))):
+        write(name, svg(1024, 1024, f'<rect width="1024" height="1024" fill="{WHITE}"/>\n  <g transform="translate(192,192) scale(6.4)">{body}</g>'))
+        shot(name, OUT / name.replace(".svg", ".png"), 1024, 1024)
+    # opaque white high-res logos with wordmark (2×), for READMEs and docs that cannot rely on SVG fonts
+    for name, src, w, h in (("logo-horizontal-white.png", "logo-horizontal.svg", 640, 120),
+                            ("avroconvert-logo-horizontal-white.png", "avroconvert-logo-horizontal.svg", 760, 120),
+                            ("logo-stacked-white.png", "logo-stacked.svg", 520, 300)):
+        body = (OUT / src).read_text().split("\n", 1)[1].rsplit("</svg>", 1)[0]
+        write("_tmp.svg", f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w*2}" height="{h*2}">'
+                          f'<rect width="{w}" height="{h}" fill="{WHITE}"/>{body}</svg>')
+        shot("_tmp.svg", OUT / name, w * 2, h * 2)
         (OUT / "_tmp.svg").unlink()
     # ICO from PNGs (no PIL dependency): plain ICO container with PNG entries
     import struct
