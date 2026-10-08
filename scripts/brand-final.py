@@ -63,7 +63,10 @@ write("mark-small.svg", svg(100, 100, mark_body(INK, SOLAR, filled_core=True, sw
 write("mark-small-dark.svg", svg(100, 100, mark_body(WHITE, SOLAR, filled_core=True, sw=9)))
 write("mark-animated.svg", svg(100, 100, mark_body(INK, SOLAR, anim=True)))
 write("mark-animated-dark.svg", svg(100, 100, mark_body(WHITE, SOLAR, anim=True)))
-write("favicon.svg", svg(100, 100, mark_body(INK, SOLAR, filled_core=True, sw=9)))
+# favicons switch chevrons to white on dark browser chrome (tab bars), where navy would vanish
+FAVICON_DARK = "<style>@media (prefers-color-scheme: dark) { polyline { stroke: #FFFFFF; } }</style>
+  "
+write("favicon.svg", svg(100, 100, FAVICON_DARK + mark_body(INK, SOLAR, filled_core=True, sw=9)))
 
 # logos
 write("logo-horizontal.svg", svg(640, 120,
@@ -120,7 +123,7 @@ write("avroconvert-mark-dark.svg", svg(100, 100, product_mark(WHITE, SOLAR)))
 write("avroconvert-mark-mono.svg", svg(100, 100, product_mark("currentColor", "currentColor")))
 write("avroconvert-mark-small.svg", svg(100, 100, product_mark(INK, SOLAR, small=True)))
 write("avroconvert-mark-small-dark.svg", svg(100, 100, product_mark(WHITE, SOLAR, small=True)))
-write("avroconvert-favicon.svg", svg(100, 100, product_mark(INK, SOLAR, small=True)))
+write("avroconvert-favicon.svg", svg(100, 100, FAVICON_DARK + product_mark(INK, SOLAR, small=True)))
 write("avroconvert-logo-horizontal.svg", svg(760, 120,
       f'<g transform="translate(10,10)">{product_mark(INK, SOLAR)}</g>\n  '
       f'<text x="130" y="66" font-family="{FONT}" font-size="44" font-weight="700" letter-spacing="-1.3" fill="{SOLAR}">sol<tspan font-weight="400" fill="{INK}">technology</tspan></text>\n  '
