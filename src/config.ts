@@ -6,8 +6,8 @@ export const site = {
   contactEmail: "contact@soltechnology.dev",
   supportEmail: "support@soltechnology.dev",
   github: "https://github.com/sol-technology",
-  // Legal entity shown in Terms (Paddle Domain Review requires the sole proprietor's legal name)
-  legalName: "Adrian Strugala SolTechnology",
+  // Legal entity shown in Terms (Paddle Domain Review requires the sole proprietor's legal name). Keep in sync with terms.md / privacy.md.
+  legalName: "Adrian Strugała Sol Technology",
   legalAddress: "Młodych Techników 4/38, 53-646 Wrocław, Poland",
   legalTaxId: "NIP 8971889807",
 };

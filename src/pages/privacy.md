@@ -2,12 +2,12 @@
 layout: ../layouts/Legal.astro
 title: Privacy Policy
 description: How SolTechnology handles personal data on soltechnology.dev and in its software.
-updated: 7 October 2026
+updated: 15 October 2026
 ---
 
 # Privacy Policy
 
-**Controller:** SolTechnology Adrian Strugała, [Street, Postal code City], Poland, NIP [●], [contact@soltechnology.dev](mailto:contact@soltechnology.dev).
+**Controller:** Adrian Strugała Sol Technology (trading as SolTechnology), Młodych Techników 4/38, 53-646 Wrocław, Poland, NIP 8971889807, [contact@soltechnology.dev](mailto:contact@soltechnology.dev).
 
 This policy explains what personal data we process, why, and your rights under the GDPR.
 
