@@ -2,12 +2,12 @@
 layout: ../layouts/Legal.astro
 title: Terms & Conditions
 description: Terms and Conditions for SolTechnology software licences.
-updated: 7 October 2026
+updated: 15 October 2026
 ---
 
 # Terms & Conditions
 
-These Terms govern the licensing of software products published by **SolTechnology Adrian Strugała**, [Street, Postal code City], Poland, NIP [●] ("SolTechnology", "we"). By purchasing or using our software you agree to these Terms.
+These Terms govern the licensing of software products published by **Adrian Strugała Sol Technology**, a sole proprietorship registered in Poland (CEIDG), Młodych Techników 4/38, 53-646 Wrocław, Poland, NIP (tax ID) 8971889807, trading as **SolTechnology** ("SolTechnology", "we"). SolTechnology operates the website soltechnology.dev. By purchasing or using our software you agree to these Terms.
 
 ## 1. Products and licences
 
@@ -67,4 +67,4 @@ These Terms are governed by the laws of Poland. Disputes shall be resolved by th
 
 ## 11. Contact
 
-SolTechnology Adrian Strugała · [Street, Postal code City], Poland · NIP [●] · [contact@soltechnology.dev](mailto:contact@soltechnology.dev)
+Adrian Strugała Sol Technology · Młodych Techników 4/38, 53-646 Wrocław, Poland · NIP 8971889807 · [contact@soltechnology.dev](mailto:contact@soltechnology.dev)
