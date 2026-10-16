@@ -1,0 +1,128 @@
+{
+  "avroconvert": {
+    "title": "AvroConvert: użytkownicy i licencje komercyjne",
+    "goal": "Companies using Avro/Kafka/Schema Registry from .NET who struggle with Apache.Avro, codegen or performance. Aim: commercial licence for AvroConvert 4.0 or paid help.",
+    "sources": ["github_issues", "stackexchange", "reddit", "hn", "github_dependents"],
+    "keywords": {
+      "avro": 3, "avroconvert": 6, "apache.avro": 4, "avrogen": 4, "schema registry": 3, "confluent": 2,
+      "kafka": 2, "ispecificrecord": 5, "genericrecord": 4, "chr.avro": 4, "avro-source-generator": 4, "event hubs": 2,
+      "schema evolution": 3, "deserializ": 1, "serializ": 1
+    },
+    "require_any": ["avro", "schema registry", "kafka"],
+    "negative": ["pyspark", "scala", "golang", "spring boot"],
+    "min_score": 5,
+    "opener_en": "Hi, saw your issue about {topic}. I maintain AvroConvert (5M NuGet downloads) and I'm finishing 4.0: typed core, full Avro 1.12 compliance, no codegen. If you paste the schema and the failing case, I'll check whether it round-trips cleanly on my side and send you the result.",
+    "opener_pl": "Cześć, widzę problem z {topic}. Rozwijam AvroConvert (5 mln pobrań na NuGet) i kończę wersję 4.0: typowany rdzeń, pełna zgodność ze spec 1.12, bez codegen. Jeśli podrzucisz schemat i przypadek, sprawdzę, czy przechodzi u mnie, i odeślę wynik.",
+    "opener_dependents": "Hi {org}, I noticed {title}. I'm the author. 4.0 is coming with a faster core and a new licence (free for small/non-commercial, paid for larger companies). Two questions: which features do you rely on, and is there anything that blocks you today? Happy to prioritise it."
+  },
+  "lake": {
+    "title": "SolTechnology.Lake: lakehouse z .NET",
+    "goal": ".NET teams that must read or write Parquet/Iceberg/Delta/Arrow or talk to Databricks/Snowflake/Fabric without Spark.",
+    "sources": ["github_issues", "stackexchange", "reddit", "hn", "ted", "useme"],
+    "keywords": {
+      "iceberg": 5, "delta lake": 4, "deltalake": 4, "parquet": 3, "apache arrow": 3, "arrow": 1, "adbc": 4, "databricks": 3,
+      "snowflake": 2, "fabric": 2, "onelake": 4, "lakehouse": 4, "data lake": 3, "spark connect": 5,
+      "duckdb": 2, "trino": 3, "athena": 2, "hive partition": 4, "parquet.net": 5, "parquetsharp": 5,
+      "data platform": 3, "data warehouse": 2, "hurtownia danych": 3, "platforma danych": 3, "jezioro danych": 4,
+      "datenplattform": 3, "data lakehouse": 4, "plateforme de données": 3, "big data": 1
+    },
+    "require_any": ["iceberg", "delta", "parquet", "arrow", "lakehouse", "data lake", "databricks", "fabric", "snowflake", "trino", "duckdb", "adbc", "data platform", "hurtownia", "platforma danych", "jezioro danych", "datenplattform", "warehouse"],
+    "negative": ["pyspark", "pandas", "polars", "scala", "rust crate", "cmake", "fetchcontent"],
+    "min_score": 5,
+    "opener_en": "Hi, saw your note about {topic} from .NET. I maintain AvroConvert and I'm building a native .NET reader/writer for Iceberg and raw Parquet lakes (no Spark, no JVM). Could we do 20 minutes on what you need to read or write, and from where? I can share early builds.",
+    "opener_pl": "Dzień dobry, w nawiązaniu do {topic}: buduję natywną bibliotekę .NET do czytania i zapisu Parquet/Iceberg bez Sparka (autor AvroConvert, 5 mln pobrań). Czy znajdzie się 20 minut na rozmowę o tym, co i skąd musicie czytać lub zapisywać? Mogę udostępnić wczesne wersje."
+  },
+  "copybook": {
+    "title": "CopybookConvert: mainframe → .NET",
+    "goal": "Companies with mainframe data (COBOL copybook, EBCDIC, COMP-3) integrating it into .NET/Kafka.",
+    "sources": ["github_issues", "stackexchange", "reddit", "ted", "useme", "hn"],
+    "keywords": {
+      "copybook": 6, "cobol": 4, "ebcdic": 5, "comp-3": 6, "packed decimal": 5, "mainframe": 3, "redefines": 5,
+      "occurs depending": 5, "vsam": 4, "db2 z/os": 3, "as/400": 2, "ibm i": 2, "z/os": 3
+    },
+    "require_any": ["copybook", "cobol", "ebcdic", "mainframe", "comp-3", "packed decimal"],
+    "negative": ["we are hiring", "job offer", "gnucobol", "cobol compiler", "cobol parser", "vscode extension", "language server"],
+    "min_score": 6,
+    "opener_en": "Hi, you mentioned {topic}. I'm building a .NET library that turns COBOL copybooks + EBCDIC files into typed C# objects/Avro (REDEFINES, OCCURS, COMP-3 handled). If you can share an anonymised copybook, I'll run it through and send back what comes out.",
+    "opener_pl": "Dzień dobry, w nawiązaniu do {topic}: buduję bibliotekę .NET, która zamienia copybooki COBOL i pliki EBCDIC na typowane obiekty C#/Avro (REDEFINES, OCCURS, COMP-3). Jeśli mogą Państwo udostępnić zanonimizowany copybook, przepuszczę go i odeślę wynik."
+  },
+  "datamask": {
+    "title": "DataMask: maskowanie i subsetting baz pod środowiska testowe",
+    "goal": "Teams copying production DBs to dev/test who need anonymisation/subsetting for SQL Server/PostgreSQL.",
+    "sources": ["stackexchange", "reddit", "hn", "ted", "useme", "github_issues"],
+    "keywords": {
+      "data masking": 6, "anonymiz": 4, "anonymis": 4, "pseudonymi": 4, "subsetting": 6, "test data": 3,
+      "redgate": 3, "tonic": 2, "greenmask": 5, "neosync": 5, "production data in dev": 5, "gdpr": 2, "pii": 3,
+      "maskowanie danych": 6, "anonimizacja": 5, "dane testowe": 4, "datenmaskierung": 6, "anonymisierung": 5
+    },
+    "require_any": ["mask", "anonym", "pseudonym", "subset", "test data", "dane testowe"],
+    "negative": ["image mask", "bitmask", "css mask", "unmask", "input mask", "mask r-cnn", "segmentation"],
+    "min_score": 6,
+    "dotnet_required": false,
+    "opener_en": "Hi, re {topic}: I'm prototyping a .NET tool that subsets a production SQL Server/Postgres DB along foreign keys and masks PII deterministically (same input → same fake value everywhere). How do you produce test data today, and what would make you switch?",
+    "opener_pl": "Dzień dobry, w nawiązaniu do {topic}: prototypuję narzędzie, które wycina spójny podzbiór produkcyjnej bazy SQL Server/Postgres po kluczach obcych i deterministycznie maskuje dane osobowe. Jak dziś przygotowują Państwo dane testowe i co musiałoby się zgadzać, żeby zmienić sposób?"
+  },
+  "paygap": {
+    "title": "Luka płacowa: jawność wynagrodzeń (dyrektywa 2023/970)",
+    "goal": "HR and compliance in EU companies > 150 employees that must compute and report the gender pay gap from 2027.",
+    "sources": ["reddit", "hn", "ted", "useme", "stackexchange"],
+    "keywords": {
+      "pay transparency": 6, "pay gap": 5, "gender pay gap": 5, "luka płacowa": 6, "jawność wynagrodzeń": 6,
+      "equal pay": 3, "2023/970": 6, "entgelttransparenz": 6, "lohntransparenz": 6, "transparence salariale": 6,
+      "work of equal value": 5, "job evaluation": 3, "wycena stanowisk": 4, "wartościowanie stanowisk": 5
+    },
+    "require_any": ["pay", "płac", "wynagrodze", "entgelt", "lohn", "salari"],
+    "negative": ["payment gateway", "paypal", "stripe", "payroll api"],
+    "min_score": 6,
+    "dotnet_required": false,
+    "opener_en": "Hi, you raised {topic}. I'm building a browser-only pay-gap calculator for the EU Pay Transparency Directive (payroll export in, statutory report out, no data leaves the browser). Would you tell me how you plan to produce the first report? 15 minutes, and you get the tool for free.",
+    "opener_pl": "Dzień dobry, w nawiązaniu do {topic}: buduję przeglądarkowy kalkulator luki płacowej pod dyrektywę o jawności wynagrodzeń (eksport z listy płac na wejściu, raport wg wzoru na wyjściu, dane nie opuszczają przeglądarki). Czy zechcą Państwo opowiedzieć w 15 minut, jak planują policzyć pierwszy raport? W zamian narzędzie za darmo."
+  },
+  "edoreczenia": {
+    "title": "e-Doręczenia dla biur rachunkowych",
+    "goal": "Accounting offices and law firms handling many clients' e-Doręczenia mailboxes (CEIDG obligation since 01.10.2026).",
+    "sources": ["useme", "reddit", "ted"],
+    "keywords": {
+      "e-doręczenia": 6, "edoręczenia": 6, "e-doreczenia": 6, "skrzynka do doręczeń": 5, "krde": 5,
+      "biuro rachunkowe": 3, "poczta polska api": 5, "doręczenia elektroniczne": 5, "doręczeń elektronicznych": 5
+    },
+    "require_any": ["doręcze", "doreczen", "krde"],
+    "negative": [],
+    "min_score": 6,
+    "dotnet_required": false,
+    "opener_pl": "Dzień dobry, widzę temat {topic}. Sprawdzam, czy biura rachunkowe potrzebują jednego panelu do skrzynek e-Doręczeń wielu klientów (odbiór, archiwum z dowodami, alerty terminów). Jak Państwo to dziś obsługują i ilu klientów ma już skrzynki?",
+    "opener_en": "Hi, re {topic}: I'm checking whether accounting offices need one panel for many clients' e-Doręczenia mailboxes. How do you handle it today?"
+  },
+  "hiring_signal": {
+    "title": "Firmy rekrutujące .NET + dane (kupcy w ruchu)",
+    "goal": "Companies hiring .NET engineers for Kafka/Avro/Databricks/Snowflake/Parquet work are building with our stack right now; the tech lead is the person to talk to about AvroConvert and Lake.",
+    "sources": ["nofluffjobs"],
+    "keywords": {
+      "avro": 6, "kafka": 4, "schema registry": 5, "event hubs": 4, "databricks": 4, "snowflake": 3, "parquet": 5,
+      "iceberg": 6, "delta lake": 5, "fabric": 2, "spark": 2, "data engineer": 3, "etl": 2, "mainframe": 4, "cobol": 5,
+      "big data": 2, "data platform": 3, "azure data": 2
+    },
+    "require_any": ["avro", "kafka", "schema registry", "event hubs", "databricks", "snowflake", "parquet", "iceberg", "delta", "spark", "data engineer", "etl", "mainframe", "cobol", "big data", "data platform"],
+    "negative": ["site reliability", "devops engineer", "qa engineer", "tester", "recruiter", "sales"],
+    "min_score": 6,
+    "dotnet_required": false,
+    "opener_en": "Hi, I saw {org} is hiring for {topic} in .NET. I'm the author of AvroConvert (5M downloads) and I'm building a native .NET Iceberg/Parquet library. Not applying; I'd like to understand what your team is building and whether a 20-minute call about the data side would be useful. Who's the right person?",
+    "opener_pl": "Dzień dobry, widzę, że {org} rekrutuje do pracy z {topic} w .NET. Jestem autorem AvroConvert (5 mln pobrań) i buduję natywną bibliotekę .NET do Iceberg/Parquet. Nie aplikuję; chciałbym zrozumieć, co buduje zespół, i sprawdzić, czy 20-minutowa rozmowa o części danych ma sens. Kto jest właściwą osobą?"
+  },
+  "dotnet_data_contract": {
+    "title": "Zlecenia: .NET + dane (gotówka i rozpoznanie)",
+    "goal": "Paid gigs and tenders where .NET meets Kafka, data, integrations. Revenue and domain knowledge, not a product.",
+    "sources": ["ted", "useme"],
+    "keywords": {
+      ".net": 3, "c#": 3, "asp.net": 2, "kafka": 3, "etl": 2, "integracja": 2, "integration": 2, "data platform": 3,
+      "hurtownia danych": 3, "data warehouse": 3, "migracja danych": 3, "data migration": 3, "api": 1,
+      "azure": 1, "event hubs": 3, "service bus": 2, "sql server": 2, "postgres": 1, "ksef": 2
+    },
+    "require_any": [".net", "c#", "asp.net", "kafka", "etl", "data platform", "hurtownia", "warehouse", "migra"],
+    "negative": ["licencj", "license", "laptop", "komputer", "sprzęt", "hardware", "drukar", "microsoft 365", "office 365", "antywir", "eset", "unity", "wiaty", "bus shelter"],
+    "min_score": 5,
+    "dotnet_required": false,
+    "opener_pl": "Dzień dobry, w sprawie ogłoszenia \"{title}\": zajmuję się .NET i systemami danych (Kafka, Avro, integracje; autor biblioteki AvroConvert, 5 mln pobrań). Chętnie dopytam o zakres i prześlę ofertę. Kiedy pasuje 20-minutowa rozmowa?",
+    "opener_en": "Hello, regarding \"{title}\": I work on .NET and data systems (Kafka, Avro, integrations; author of AvroConvert, 5M downloads). I'd like to clarify scope and send a proposal. When would a 20-minute call suit you?"
+  }
+}
