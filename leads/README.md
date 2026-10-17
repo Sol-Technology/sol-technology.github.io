@@ -15,7 +15,9 @@ python3 leads/radar.py --all                 # pokaż też już widziane
 
 Tylko biblioteka standardowa Pythona. `GITHUB_TOKEN` opcjonalny (bez niego 10 zapytań/min, skrypt czeka).
 
-Workflow `.github/workflows/lead-radar.yml` odpala się codziennie 05:15 UTC, commituje digest i stan z `[skip ci]`, więc nie uruchamia deployu strony. Sekrety do ustawienia w repo: `ANTHROPIC_API_KEY` albo `OPENAI_API_KEY` (opcjonalnie, dla `--llm`).
+**LLM bez osobnego klucza**: `--llm` używa GitHub Models (`openai/gpt-4o-mini`), autoryzowanych tokenem GitHub. W Actions działa z wbudowanym `GITHUB_TOKEN` (workflow ma `models: read`). Lokalnie: PAT z uprawnieniem `models:read` w `GITHUB_MODELS_TOKEN` (fine-grained token → Account permissions → Models: Read-only), albo `gh auth login` i `GITHUB_MODELS_TOKEN=$(gh auth token)`. Darmowy limit to kilkadziesiąt–kilkaset zapytań dziennie zależnie od modelu; subskrypcja Copilota podnosi limity. Jeśli ustawisz `ANTHROPIC_API_KEY` lub `OPENAI_API_KEY`, mają pierwszeństwo. Tokena Copilota z VS Code nie da się użyć poza IDE i nie wolno (regulamin).
+
+Workflow `.github/workflows/lead-radar.yml` odpala się codziennie 05:15 UTC, commituje digest i stan z `[skip ci]`, więc nie uruchamia deployu strony. Sekrety opcjonalne: `ANTHROPIC_API_KEY` albo `OPENAI_API_KEY`; bez nich LLM idzie przez GitHub Models.
 
 ## Źródła
 

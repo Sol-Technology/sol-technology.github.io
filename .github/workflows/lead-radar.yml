@@ -9,12 +9,13 @@ on:
         description: "Look-back window in days"
         default: "2"
       llm:
-        description: "Rate and draft with LLM (needs ANTHROPIC_API_KEY or OPENAI_API_KEY secret)"
+        description: "Rate and draft with LLM (GitHub Models via GITHUB_TOKEN; or ANTHROPIC/OPENAI secret)"
         type: boolean
         default: true
 
 permissions:
   contents: write
+  models: read
 
 concurrency:
   group: lead-radar
@@ -36,7 +37,7 @@ jobs:
         run: |
           DAYS="${{ github.event.inputs.days || '2' }}"
           LLM=""
-          if [ "${{ github.event.inputs.llm || 'true' }}" = "true" ] && { [ -n "$ANTHROPIC_API_KEY" ] || [ -n "$OPENAI_API_KEY" ]; }; then LLM="--llm"; fi
+          if [ "${{ github.event.inputs.llm || 'true' }}" = "true" ]; then LLM="--llm"; fi
           python3 leads/radar.py --days "$DAYS" $LLM
       - name: Commit digest and state
         run: |

@@ -10,7 +10,9 @@ Usage:
   python3 leads/radar.py --llm                # rate + draft openers with Anthropic/OpenAI (needs API key env)
   python3 leads/radar.py --sources ted,useme  # restrict sources
 
-Env (optional): GITHUB_TOKEN (higher rate limits), ANTHROPIC_API_KEY or OPENAI_API_KEY (for --llm).
+Env (optional): GITHUB_TOKEN (higher rate limits; also enables --llm via GitHub Models),
+GITHUB_MODELS_TOKEN (a PAT with models:read if you want GitHub Models locally),
+ANTHROPIC_API_KEY or OPENAI_API_KEY (alternative --llm providers, take precedence).
 Only the standard library is used.
 """
 from __future__ import annotations
@@ -491,6 +493,14 @@ def llm_rate(lead: Lead, profile: dict, log) -> None:
                           headers={"Authorization": f"Bearer {os.environ['OPENAI_API_KEY']}"},
                           data={"model": os.environ.get("OPENAI_MODEL", "gpt-4o-mini"), "temperature": 0.3,
                                 "response_format": {"type": "json_object"},
+                                "messages": [{"role": "user", "content": prompt}]})
+            text = d["choices"][0]["message"]["content"]
+        elif os.environ.get("GITHUB_MODELS_TOKEN") or os.environ.get("GITHUB_TOKEN"):
+            # GitHub Models: free tier for any GitHub account, higher limits with Copilot; Actions GITHUB_TOKEN needs `models: read`
+            tok = os.environ.get("GITHUB_MODELS_TOKEN") or os.environ["GITHUB_TOKEN"]
+            d = http_json("https://models.github.ai/inference/chat/completions", method="POST",
+                          headers={"Authorization": f"Bearer {tok}", "Accept": "application/vnd.github+json"},
+                          data={"model": os.environ.get("GITHUB_MODEL", "openai/gpt-4o-mini"), "temperature": 0.3,
                                 "messages": [{"role": "user", "content": prompt}]})
             text = d["choices"][0]["message"]["content"]
         else:
