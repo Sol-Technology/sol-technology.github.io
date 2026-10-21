@@ -2,7 +2,7 @@
 layout: ../layouts/Legal.astro
 title: Refund Policy
 description: Refund Policy for SolTechnology software licences.
-updated: 7 October 2026
+updated: 21 October 2026
 ---
 
 # Refund Policy
@@ -17,8 +17,10 @@ You may request a full refund within **14 days** of the initial purchase of any 
 
 Contact either party – both routes lead to the same result:
 
-- **Paddle** (our reseller and Merchant of Record, who issued your invoice): [paddle.net](https://paddle.net) or reply to your order e-mail.
-- **SolTechnology**: [contact@soltechnology.dev](mailto:contact@soltechnology.dev) with your order number.
+- **Polar** (our reseller and Merchant of Record, who issued your invoice): [support@polar.sh](mailto:support@polar.sh) or reply to your order e-mail.
+- **SolTechnology**: [contact@soltechnology.dev](mailto:contact@soltechnology.dev) with your order or invoice number.
+
+For orders invoiced directly by SolTechnology (purchase orders, bank transfers), contact us; the same 14-day guarantee applies.
 
 Refunds are returned to the original payment method, typically within 5–10 business days depending on your bank. Taxes collected at checkout are refunded together with the licence fee.
 
@@ -28,7 +30,7 @@ The licence key issued for the refunded order is revoked and the Commercial Lice
 
 ## Cancelling a subscription
 
-You can cancel the automatic renewal at any time from the link in your order e-mail or by contacting us. Cancellation stops future charges; your licence and perpetual-fallback rights for the current period remain unchanged until the period ends.
+You can cancel the automatic renewal at any time from Polar's customer portal (linked in your order e-mail) or by contacting us. Cancellation stops future charges; your licence and perpetual-fallback rights for the current period remain unchanged until the period ends.
 
 ## Exceptions
 

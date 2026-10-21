@@ -2,7 +2,7 @@
 layout: ../layouts/Legal.astro
 title: Terms & Conditions
 description: Terms and Conditions for SolTechnology software licences.
-updated: 15 October 2026
+updated: 21 October 2026
 ---
 
 # Terms & Conditions
@@ -35,9 +35,9 @@ The full text of each licence ships with the software and is available in the pr
 
 ## 4. Ordering, payment and taxes
 
-1. Orders are processed by **Paddle.com Market Ltd** (and its affiliates), which acts as our authorised reseller and Merchant of Record. Paddle issues the invoice, collects payment and handles applicable VAT, GST and sales tax. Paddle's [Buyer Terms](https://www.paddle.com/legal/checkout-buyer-terms) apply to the transaction.
-2. Prices are shown in USD exclusive of tax; applicable tax is calculated at checkout based on your location and tax status.
-3. Purchase orders, bank transfers and multi-year quotes are available on request through [contact@soltechnology.dev](mailto:contact@soltechnology.dev).
+1. Orders placed through the checkout on this website are processed by **Polar Software, Inc.** (3500 South DuPont Highway, Dover, DE 19901, USA, and its affiliates; "Polar"), which acts as our authorised reseller and Merchant of Record. You purchase the licence from Polar; Polar issues the invoice, collects payment and handles applicable VAT, GST and sales tax, while the licence itself is granted by SolTechnology under these Terms. Polar's [Buyer Terms](https://polar.sh/legal/checkout-buyer-terms) apply to the transaction.
+2. Prices are shown in USD exclusive of tax; applicable tax is calculated at checkout based on your location and tax status. Subscriptions renew automatically every year at the then-current price until cancelled; you can cancel at any time from Polar's customer portal (linked in your order e-mail) and the licence remains valid until the end of the paid period.
+3. Purchase orders, bank transfers and multi-year quotes are available on request through [contact@soltechnology.dev](mailto:contact@soltechnology.dev). Such orders are concluded **directly with SolTechnology**, outside Polar's checkout: SolTechnology issues the invoice and these Terms apply in full, while Polar's Buyer Terms do not.
 
 ## 5. Refunds
 

@@ -2,7 +2,7 @@
 layout: ../layouts/Legal.astro
 title: Privacy Policy
 description: How SolTechnology handles personal data on soltechnology.dev and in its software.
-updated: 15 October 2026
+updated: 21 October 2026
 ---
 
 # Privacy Policy
@@ -23,9 +23,9 @@ We do not use analytics cookies or advertising trackers. Fonts are loaded from G
 
 ## 3. Purchases
 
-When you buy a licence, the checkout is operated by **Paddle.com Market Ltd**, our reseller and Merchant of Record, acting as an independent controller for the transaction. Paddle collects your name, e-mail, billing address, tax identifiers and payment details to process the order, issue the invoice and handle tax compliance. See [Paddle's privacy policy](https://www.paddle.com/legal/privacy).
+When you buy a licence through this website, the checkout is operated by **Polar Software, Inc.** (Delaware, USA), our reseller and Merchant of Record, acting as an independent controller for the transaction. Polar collects your name, e-mail, billing address, tax identifiers and payment details to process the order, issue the invoice and handle tax compliance. See [Polar's privacy policy](https://polar.sh/legal/privacy-policy).
 
-Paddle shares with us the data needed to fulfil the order: licensee name, e-mail, company, country, product and subscription status. We use it to:
+Polar shares with us the data needed to fulfil the order: licensee name, e-mail, billing name, country, product, order and subscription status. For orders invoiced directly by us (purchase orders, bank transfers) we collect the same data ourselves. We use it to:
 
 - issue and manage licence keys (legal basis: contract, Art. 6(1)(b) GDPR);
 - provide support and send service messages about your subscription (contract);
@@ -44,7 +44,7 @@ Order and licence records are kept for the duration of the licence relationship 
 
 ## 6. Recipients and transfers
 
-Processors and independent controllers involved: Paddle (UK/US; EU Standard Contractual Clauses and UK adequacy), GitHub (US; EU–US Data Privacy Framework), Cloudflare (US; DPF), Google – Gmail and Google Fonts (US; DPF). We do not transfer data outside these services.
+Processors and independent controllers involved: Polar Software, Inc. (US; EU Standard Contractual Clauses, Decision 2021/914), Cloudflare (US; DPF) – which also runs the licensing service that generates licence keys and stores order records, Resend (US; DPF) – licence e-mails, GitHub (US; DPF), Google – Gmail and Google Fonts (US; DPF). We do not transfer data outside these services.
 
 ## 7. Your rights
 
