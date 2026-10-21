@@ -6,20 +6,22 @@ export const site = {
   contactEmail: "contact@soltechnology.dev",
   supportEmail: "support@soltechnology.dev",
   github: "https://github.com/sol-technology",
-  // Legal entity shown in Terms (Paddle Domain Review requires the sole proprietor's legal name). Keep in sync with terms.md / privacy.md.
+  // Legal entity shown in Terms (the Merchant of Record's account review requires the sole proprietor's legal name). Keep in sync with terms.md / privacy.md.
   legalName: "Adrian Strugała Sol Technology",
   legalAddress: "Młodych Techników 4/38, 53-646 Wrocław, Poland",
   legalTaxId: "NIP 8971889807",
 };
 
-// Paddle Billing. Leave token empty until the Paddle account is live; buttons fall back to e-mail.
-export const paddle = {
-  environment: "production" as "sandbox" | "production",
-  clientToken: "live_ec07c55527f273e2c7442ad3eaf",
-  prices: {
-    avroconvertBusiness: "pri_01m4brjga04ft4m98zxaz848tg",
-    avroconvertEnterprise: "pri_01m4brm8gex8ahxrepqefgc7jm",
+// Polar (polar.sh), reseller and Merchant of Record. One hosted Checkout Link per plan (Polar → Checkout Links → New Link,
+// one product, return URL https://soltechnology.dev/avroconvert/#pricing). Sandbox links start with https://sandbox.polar.sh/.
+// Leave a link empty until the Polar organisation is live; that button falls back to e-mail.
+export const polar = {
+  checkoutLinks: {
+    avroconvertBusiness: "",
+    avroconvertEnterprise: "",
   },
+  // Shown on card statements; Polar's default descriptor is "POLAR* <organisation name>".
+  statementDescriptor: "POLAR* SOLTECHNOLOGY",
 };
 
 export const products = [
@@ -68,7 +70,7 @@ export const pricing = {
         "Perpetual fallback: versions released during your subscription stay licensed forever",
         "Priority issue triage on GitHub",
       ],
-      cta: { label: "Buy Business licence", paddlePrice: "avroconvertBusiness" },
+      cta: { label: "Buy Business licence", checkoutLink: "avroconvertBusiness" },
       license: "SolTechnology Commercial Licence",
       highlight: true,
     },
@@ -81,10 +83,10 @@ export const pricing = {
       bullets: [
         "Everything in Business",
         "E-mail support, 2 business-day response target",
-        "Invoice / purchase order / bank transfer via Paddle",
+        "Purchase order and bank transfer on request",
         "Signed licence agreement on request",
       ],
-      cta: { label: "Buy Enterprise licence", paddlePrice: "avroconvertEnterprise" },
+      cta: { label: "Buy Enterprise licence", checkoutLink: "avroconvertEnterprise" },
       license: "SolTechnology Commercial Licence",
     },
   ],

@@ -1,8 +1,8 @@
 ---
 import Base from "../layouts/Base.astro";
-import { site, products, pricing, paddle } from "../config";
+import { site, products, pricing, polar } from "../config";
 const p = products.find((x) => x.slug === "avroconvert")!;
-const paddleReady = Boolean(paddle.clientToken);
+const checkoutLink = (key: string) => polar.checkoutLinks[key as keyof typeof polar.checkoutLinks] || null;
 
 const features = [
   ["Serialize / Deserialize", "byte[] avro = AvroConvert.Serialize(obj);\nvar back = AvroConvert.Deserialize<MyType>(avro);"],
@@ -70,11 +70,12 @@ const features = [
           <h3 class="text-lg font-semibold">{t.name}</h3>
           <p class="mt-1 text-sm text-muted min-h-10">{t.for}</p>
           <p class="mt-5"><span class="text-4xl font-bold tracking-tight">{t.price === 0 ? "Free" : `$${t.price.toLocaleString("en-US")}`}</span> <span class="text-muted text-sm">{t.period}</span></p>
+          {t.price > 0 && <p class="mt-1 text-xs text-muted">Renews automatically every year at the then-current price until cancelled. Cancel any time.</p>}
           <ul class="mt-5 space-y-2 text-[15px] flex-1">{t.bullets.map((b) => <li class="flex gap-2"><span class="text-solar">✔</span><span>{b}</span></li>)}</ul>
           <p class="mt-5 text-xs text-muted">{t.license}</p>
-          {"paddlePrice" in t.cta ? (
-            paddleReady ? (
-              <button type="button" class="mt-4 rounded-lg bg-ink text-white px-4 py-3 font-semibold hover:bg-ink-2 transition" data-paddle-price={paddle.prices[t.cta.paddlePrice as keyof typeof paddle.prices]}>{t.cta.label}</button>
+          {"checkoutLink" in t.cta ? (
+            checkoutLink(t.cta.checkoutLink) ? (
+              <a href={checkoutLink(t.cta.checkoutLink)!} class="mt-4 rounded-lg bg-ink text-white px-4 py-3 font-semibold text-center hover:bg-ink-2 transition">{t.cta.label}</a>
             ) : (
               <a href={`mailto:${site.contactEmail}?subject=${encodeURIComponent(`AvroConvert ${t.name} licence`)}`} class="mt-4 rounded-lg bg-ink text-white px-4 py-3 font-semibold text-center hover:bg-ink-2 transition">{t.cta.label}</a>
             )
@@ -84,7 +85,7 @@ const features = [
         </div>
       ))}
     </div>
-    <p class="mt-6 text-sm text-muted">Checkout, invoicing, VAT and refunds are handled by <a class="underline" href="https://www.paddle.com" target="_blank" rel="noopener">Paddle.com Market Ltd</a>, our reseller and Merchant of Record; the charge appears on your statement as <strong>PADDLE.NET</strong>. Licences are annual subscriptions that renew automatically and can be cancelled any time. By purchasing you accept our <a class="underline" href="/terms">Terms &amp; Conditions</a>, <a class="underline" href="/refunds">Refund Policy</a> (14-day money-back) and <a class="underline" href="/privacy">Privacy Policy</a>.</p>
+    <p class="mt-6 text-sm text-muted">Checkout, invoicing, VAT and refunds are handled by <a class="underline" href="https://polar.sh" target="_blank" rel="noopener">Polar Software, Inc.</a>, our reseller and Merchant of Record; the charge appears on your statement as <strong>{polar.statementDescriptor}</strong>. Licences are annual subscriptions that renew automatically at the then-current price and can be cancelled any time from Polar’s customer portal. By purchasing you accept our <a class="underline" href="/terms">Terms &amp; Conditions</a>, <a class="underline" href="/refunds">Refund Policy</a> (14-day money-back) and <a class="underline" href="/privacy">Privacy Policy</a>, and Polar’s <a class="underline" href="https://polar.sh/legal/checkout-buyer-terms" target="_blank" rel="noopener">Buyer Terms</a>.</p>
     <div class="mt-10 grid gap-6 md:grid-cols-2 text-[15px]">
       <div class="rounded-2xl bg-mist p-6">
         <h3 class="font-semibold">Who needs a commercial licence?</h3>
@@ -92,45 +93,9 @@ const features = [
       </div>
       <div class="rounded-2xl bg-mist p-6">
         <h3 class="font-semibold">What you get after purchase</h3>
-        <p class="mt-2 text-ink/80">A licence key by e-mail within minutes, a VAT invoice from Paddle, and the right to use every version released during your subscription in perpetuity. Renewals keep you on new releases. Need a quote, PO or bank transfer? <a class="underline" href="/contact">Contact us</a>.</p>
+        <p class="mt-2 text-ink/80">A licence key by e-mail within minutes, a VAT invoice from Polar (add your company name and VAT number at checkout or later in the customer portal; EU businesses with a valid VAT ID are charged under reverse charge), and the right to use every version released during your subscription in perpetuity. Renewals keep you on new releases. Checkout takes cards and wallets only – need a quote, purchase order or bank transfer? <a class="underline" href="/contact">Contact us</a>.</p>
       </div>
     </div>
   </section>
 
-  {paddleReady && (
-    <>
-      <dialog id="licensee-dialog" class="rounded-2xl border border-line p-0 w-[min(28rem,calc(100vw-2rem))] backdrop:bg-ink/40">
-        <form method="dialog" class="p-7">
-          <h3 class="text-lg font-semibold">Who is the licence for?</h3>
-          <p class="mt-1 text-sm text-muted">The organisation name printed on the licence certificate and embedded in the key. Use the legal name of the company that will use AvroConvert.</p>
-          <label class="block mt-5 text-sm font-medium" for="licensee">Organisation name</label>
-          <input id="licensee" name="licensee" type="text" required minlength="2" maxlength="120" autocomplete="organization" placeholder="Acme Ltd." class="mt-1 w-full rounded-lg border border-line px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-solar/40" />
-          <div class="mt-6 flex gap-3 justify-end">
-            <button type="button" value="cancel" class="rounded-lg border border-line px-4 py-2.5 font-medium hover:bg-mist transition" data-cancel>Cancel</button>
-            <button type="submit" value="checkout" class="rounded-lg bg-ink text-white px-4 py-2.5 font-semibold hover:bg-ink-2 transition">Continue to checkout</button>
-          </div>
-        </form>
-      </dialog>
-      <script is:inline src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
-      <script is:inline define:vars={{ env: paddle.environment, token: paddle.clientToken }}>
-        if (env === "sandbox") Paddle.Environment.set("sandbox");
-        Paddle.Initialize({ token });
-
-        const dialog = document.getElementById("licensee-dialog");
-        const form = dialog.querySelector("form");
-        const input = dialog.querySelector("#licensee");
-        let priceId = null;
-
-        document.querySelectorAll("[data-paddle-price]").forEach((b) =>
-          b.addEventListener("click", () => { priceId = b.dataset.paddlePrice; dialog.showModal(); input.focus(); }));
-        dialog.querySelector("[data-cancel]").addEventListener("click", () => dialog.close());
-        form.addEventListener("submit", () => {
-          // Read by the licensing Worker from transaction.custom_data.licensee.
-          const licensee = input.value.trim();
-          if (!licensee) return;
-          Paddle.Checkout.open({ items: [{ priceId, quantity: 1 }], customData: { licensee } });
-        });
-      </script>
-    </>
-  )}
 </Base>
