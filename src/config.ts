@@ -13,12 +13,12 @@ export const site = {
 };
 
 // Polar (polar.sh), reseller and Merchant of Record. One hosted Checkout Link per plan (Polar → Checkout Links → New Link,
-// one product, return URL https://soltechnology.dev/avroconvert/#pricing). Sandbox links start with https://sandbox.polar.sh/.
-// Leave a link empty until the Polar organisation is live; that button falls back to e-mail.
+// one product, return URL https://soltechnology.dev/avroconvert/#pricing). Production links live on buy.polar.sh; sandbox ones
+// (for local tests, see licensing/ops/docs/MarketplaceChecklist.md) on sandbox-api.polar.sh. An empty link falls back to e-mail.
 export const polar = {
   checkoutLinks: {
-    avroconvertBusiness: "",
-    avroconvertEnterprise: "",
+    avroconvertBusiness: "https://buy.polar.sh/polar_cl_mo815lurMHhc99B1R1CtS08tv3x0qmL5pqc4k0sKZnj",
+    avroconvertEnterprise: "https://buy.polar.sh/polar_cl_DyVDhVWMuVWtQCTy7f5hWaVBkIKE3SicmR68h2ZO7lF",
   },
   // Shown on card statements; Polar's default descriptor is "POLAR* <organisation name>".
   statementDescriptor: "POLAR* SOLTECHNOLOGY",
