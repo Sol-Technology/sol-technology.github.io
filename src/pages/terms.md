@@ -17,15 +17,20 @@ Each product (for example **AvroConvert**) is distributed under a multi-licence 
 |---|---|---|
 | PolyForm Noncommercial 1.0.0 | Any noncommercial use: personal, education, research, charities | Free |
 | PolyForm Small Business 1.0.0 | Commercial use by organisations with fewer than 100 people and less than USD 1,000,000 in annual revenue (including affiliates) | Free |
-| SolTechnology Commercial Licence | All other commercial use | Annual subscription per organisation |
+| SolTechnology Commercial Licence – **Business** | Commercial use by organisations with fewer than 1,000 people (employees and contractors, including affiliates) that are not publicly listed and not public-sector bodies | Annual subscription per organisation |
+| SolTechnology Commercial Licence – **Enterprise** | Required for all other commercial use: organisations with 1,000 or more people, publicly listed companies and public-sector bodies; available to anyone | Annual subscription per organisation |
 
-The full text of each licence ships with the software and is available in the product repository. Evaluation, development and testing against the software are permitted under every licence tier.
+The full text of each licence ships with the software and is available in the product repository. Evaluation, development and testing against the software are permitted under every licence tier. The Commercial Licence tier is determined by the Licensee's size and status on the purchase or renewal date, not by the Licensee's choice.
+
+**Holders of AvroConvert 3.x commercial licences** (sold by Xabe) keep their rights to 3.x unchanged and are entitled, without time limit and free of charge, to a perpetual Commercial Licence for 4.x and all future versions in the tier that applies to them. The key is issued on request against proof of purchase sent to contact@soltechnology.dev.
 
 ## 2. Commercial Licence – scope
 
-1. The Commercial Licence is granted to the purchasing organisation (the "Licensee") and covers all legal entities under its control, with no limit on the number of developers, applications or deployments.
-2. The Licensee may use, copy and deploy the software in any number of applications, servers, containers and environments, including redistribution as part of the Licensee's own products, provided the software is not offered as a standalone library or competing product.
-3. The Licensee may not remove licence notices, sublicense the software on its own, or share licence keys outside the Licensee's organisation.
+1. The Commercial Licence is granted to the purchasing organisation (the "Licensee") and covers all legal entities under its control, with no limit on the number of developers, applications or deployments. The Enterprise tier additionally covers the Licensee's affiliates that are not under its control.
+2. The Commercial Licence covers AvroConvert 4.x and later and, in addition, the 3.4.x maintenance releases (otherwise available only under CC BY-NC-SA 3.0), so that a Licensee that has not yet moved to .NET 10 can be licensed immediately and upgrade later.
+3. A Business Licensee that reaches 1,000 people, lists its securities or becomes a public-sector body during the subscription keeps its Business licence until the end of the paid period and must move to Enterprise at the next renewal.
+4. The Licensee may use, copy and deploy the software in any number of applications, servers, containers and environments, including redistribution as part of the Licensee's own products, provided the software is not offered as a standalone library or competing product.
+5. The Licensee may not remove licence notices, sublicense the software on its own, or share licence keys outside the Licensee's organisation.
 
 ## 3. Subscription term and perpetual fallback
 
