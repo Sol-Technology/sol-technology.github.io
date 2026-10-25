@@ -1,0 +1,145 @@
+---
+import Tool from "../../../layouts/Tool.astro";
+---
+<Tool slug="json-to-avro">
+  <div class="grid gap-6 lg:grid-cols-2">
+    <div>
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+        <label class="tool-label" for="json">JSON data</label>
+        <div class="flex flex-wrap gap-2">
+          <button id="example" class="tool-button" type="button">Load example</button>
+          <button id="open" class="tool-button" type="button">Open .json</button>
+          <input id="file" type="file" accept=".json,application/json" hidden />
+        </div>
+      </div>
+      <div id="json"></div>
+      <p class="mt-2 text-xs text-muted">An object or an array of objects. The schema is inferred from the values · <kbd class="font-mono">Ctrl</kbd>/<kbd class="font-mono">⌘</kbd>+<kbd class="font-mono">Enter</kbd> to convert</p>
+      <div class="mt-4 flex flex-wrap items-center gap-2">
+        <button id="convert" class="tool-button-primary" type="button">Convert</button>
+        <label class="text-sm text-muted" for="codec">Codec</label>
+        <select id="codec" class="tool-select">
+          <option>Null</option><option selected>Deflate</option><option>Snappy</option><option>Zstandard</option>
+        </select>
+        <button id="download" class="tool-button" type="button" disabled>Download .avro</button>
+      </div>
+      <div id="error" class="tool-error" hidden></div>
+    </div>
+    <div class="min-w-0">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+        <div class="flex gap-1" role="tablist">
+          <button class="tool-button" type="button" data-tab="schema" aria-selected="true">Avro schema</button>
+          <button class="tool-button" type="button" data-tab="model" aria-selected="false">C# model</button>
+        </div>
+        <button id="copy" class="tool-button" type="button">Copy</button>
+      </div>
+      <div id="schema"></div>
+      <div id="model" hidden></div>
+    </div>
+  </div>
+
+  <div id="sizes-box" class="mt-10" hidden>
+    <h2 class="text-xl font-semibold">Size of this data</h2>
+    <p class="mt-1 text-sm text-muted">An Avro file carries its schema in the header (<span id="header-size"></span> here), so for a handful of records it can be larger than the JSON. The records themselves are binary and usually several times smaller; paste more data to see the difference grow.</p>
+    <div id="sizes" class="mt-4 space-y-2"></div>
+  </div>
+
+  <pre slot="code" class="mt-3 rounded-lg bg-ink text-white/90 px-3 py-2 text-[13px] font-mono overflow-x-auto"><code>AvroSchema.InferFromJson(json);
+AvroConvert.Json2Avro(json, CodecType.Deflate);</code></pre>
+</Tool>
+
+<script>
+  import { attempt, startEngine } from "../../../lib/avro-engine";
+  import { createEditor } from "../../../lib/editor";
+  import { $, copyText, download, formatBytes, readFile, showError, stored } from "../../../lib/tool-utils";
+
+  const example = JSON.stringify(
+    Array.from({ length: 50 }, (_, i) => ({
+      orderId: 1000 + i,
+      customer: { name: ["Ada", "Linus", "Grace", "Barbara"][i % 4], country: ["PL", "US", "DE"][i % 3] },
+      total: Math.round((19.99 + i * 7.5) * 100) / 100,
+      paid: i % 4 !== 0,
+      items: [{ sku: `SKU-${i % 9}`, quantity: 1 + (i % 3) }],
+      placedAt: new Date(Date.UTC(2026, 9, 1 + (i % 25), 12, i % 60)).toISOString(),
+    })),
+    null,
+    2,
+  );
+
+  const engine = await startEngine();
+  const errorBox = $("#error");
+  let avro: Uint8Array | undefined;
+
+  const schemaView = createEditor($("#schema"), { language: "json", readOnly: true, minHeight: "24rem" });
+  const modelView = createEditor($("#model"), { language: "csharp", readOnly: true, minHeight: "24rem" });
+
+  const renderSizes = (sizes: { json: number; jsonGzip: number; avroHeader: number; avro: Record<string, number> }) => {
+    const rows: [string, number, boolean][] = [
+      ["JSON (minified)", sizes.json, false],
+      ["JSON, gzip", sizes.jsonGzip, false],
+      ...Object.entries(sizes.avro).map(([codec, size]) => [`Avro, ${codec === "Null" ? "no codec" : codec.toLowerCase()}`, size, true] as [string, number, boolean]),
+    ];
+    const max = Math.max(...rows.map(([, size]) => size));
+    $("#header-size").textContent = formatBytes(sizes.avroHeader);
+    $("#sizes").replaceChildren(...rows.map(([label, size, isAvro]) => {
+      const row = document.createElement("div");
+      row.className = "grid grid-cols-[9rem_1fr_5rem] sm:grid-cols-[12rem_1fr_6rem] items-center gap-3 text-sm";
+      row.innerHTML = `<span></span><span class="h-3 rounded-full bg-mist overflow-hidden"><span class="block h-full rounded-full"></span></span><span class="text-right font-mono text-[13px]"></span>`;
+      row.children[0].textContent = label;
+      const bar = row.children[1].firstElementChild as HTMLElement;
+      bar.style.width = `${Math.max(2, (size / max) * 100)}%`;
+      bar.style.background = isAvro ? "var(--color-solar)" : "var(--color-deep)";
+      row.children[2].textContent = formatBytes(size);
+      return row;
+    }));
+    $("#sizes-box").hidden = false;
+  };
+
+  const convert = () => {
+    const json = input.get().trim();
+    stored.set("json", json);
+    if (!json) return;
+    const schema = attempt(() => engine.InferSchema(json));
+    showError(errorBox, schema.error);
+    if (schema.error) return;
+    schemaView.set(schema.value!);
+    modelView.set(attempt(() => engine.GenerateModel(schema.value!)).value ?? "");
+    const file = attempt(() => engine.JsonToAvro(json, $<HTMLSelectElement>("#codec").value));
+    showError(errorBox, file.error);
+    avro = file.value;
+    $<HTMLButtonElement>("#download").disabled = !avro;
+    const sizes = attempt(() => engine.CompareSizes(json));
+    if (sizes.value) renderSizes(JSON.parse(sizes.value));
+  };
+
+  const input = createEditor($("#json"), { language: "json", minHeight: "24rem", placeholder: '[{ "id": 1, "name": "…" }]', onRun: convert });
+
+  $("#convert").addEventListener("click", convert);
+  $("#codec").addEventListener("change", convert);
+  $("#example").addEventListener("click", () => {
+    input.set(example);
+    convert();
+  });
+  $("#open").addEventListener("click", () => $<HTMLInputElement>("#file").click());
+  $<HTMLInputElement>("#file").addEventListener("change", async (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    input.set(new TextDecoder().decode(await readFile(file)));
+    convert();
+  });
+  $("#download").addEventListener("click", () => avro && download(avro, "data.avro", "application/avro"));
+  $("#copy").addEventListener("click", (e) => copyText(($("#model").hidden ? schemaView : modelView).get(), e.currentTarget as HTMLElement));
+  document.querySelectorAll<HTMLButtonElement>("[data-tab]").forEach((button) =>
+    button.addEventListener("click", () => {
+      $("#schema").hidden = button.dataset.tab !== "schema";
+      $("#model").hidden = button.dataset.tab !== "model";
+      document.querySelectorAll("[data-tab]").forEach((b) => b.setAttribute("aria-selected", String(b === button)));
+    }),
+  );
+
+  input.set(stored.get("json") ?? example);
+  convert();
+</script>
+
+<style>
+  [data-tab][aria-selected="true"] { background: var(--color-ink); color: white; border-color: var(--color-ink); }
+</style>

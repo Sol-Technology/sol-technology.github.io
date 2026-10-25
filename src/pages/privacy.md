@@ -2,7 +2,7 @@
 layout: ../layouts/Legal.astro
 title: Privacy Policy
 description: How SolTechnology handles personal data on soltechnology.dev and in its software.
-updated: 21 October 2026
+updated: 25 October 2026
 ---
 
 # Privacy Policy
@@ -18,6 +18,8 @@ Our libraries (for example AvroConvert) run entirely inside your own application
 ## 2. This website
 
 soltechnology.dev is a static site hosted on **GitHub Pages** (GitHub, Inc.) and served through **Cloudflare** DNS. These providers process connection data (IP address, user agent, request time) in server logs for security and delivery; we do not receive this data in identifiable form.
+
+The AvroConvert Online tools (soltechnology.dev/avroconvert/online) run AvroConvert inside your browser as WebAssembly. Schemas, files and messages you enter **are processed on your device and never uploaded**. Your last input is kept in your browser's local storage so it is there when you come back; links you create with "Share link" carry their content after the `#`, which browsers do not send to the server.
 
 We do not use analytics cookies or advertising trackers. Fonts are loaded from Google Fonts, which processes your IP address to deliver the font files ([Google privacy policy](https://policies.google.com/privacy)).
 

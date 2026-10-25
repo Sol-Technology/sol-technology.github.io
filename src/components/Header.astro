@@ -1,14 +1,17 @@
 ---
 import { site } from "../config";
 const links = [
-  { href: "/#products", label: "Products" },
+  { href: "/#products", label: "Products", desktopOnly: true },
+  { href: "/avroconvert/online/", label: "Tools" },
   { href: "/avroconvert#pricing", label: "Pricing" },
   { href: "/terms", label: "Terms", desktopOnly: true },
   { href: "/contact", label: "Contact" },
   { href: site.github, label: "GitHub", external: true, desktopOnly: true },
 ];
 const path = Astro.url.pathname;
-const isActive = (href: string) => !href.includes("#") && !href.startsWith("http") && path.replace(/\/$/, "") === href.replace(/\/$/, "");
+const isActive = (href: string) =>
+  !href.includes("#") && !href.startsWith("http") &&
+  (path.replace(/\/$/, "") === href.replace(/\/$/, "") || (href.endsWith("/") && href.length > 1 && path.startsWith(href)));
 ---
 <header class="sticky top-0 z-40 bg-ink text-white border-b border-white/10">
   <div class="mx-auto max-w-6xl px-5 h-16 flex items-center justify-between">

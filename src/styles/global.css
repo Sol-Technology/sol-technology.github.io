@@ -28,3 +28,13 @@ body { @apply bg-white text-ink antialiased font-sans; }
 .prose-legal th, .prose-legal td { @apply border border-line px-3 py-2 text-left align-top; }
 .prose-legal th { @apply bg-mist font-semibold; }
 .prose-legal code { @apply font-mono text-[13px] bg-mist px-1.5 py-0.5 rounded; }
+
+/* AvroConvert Online tools */
+.tool-button { @apply inline-flex items-center gap-1.5 rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink hover:border-ink/40 disabled:opacity-50 transition; }
+.tool-button-primary { @apply inline-flex items-center gap-1.5 rounded-lg bg-solar px-4 py-2 text-sm font-semibold text-ink hover:bg-solar-dark disabled:opacity-50 transition; }
+.tool-label { @apply text-sm font-semibold; }
+.tool-error { @apply mt-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 whitespace-pre-wrap font-mono; }
+.tool-dropzone { @apply flex cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl border-2 border-dashed border-line bg-mist px-6 py-10 text-center text-muted transition hover:border-ink/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky; }
+.tool-dropzone[data-over] { @apply border-solar bg-solar/10; }
+.tool-select { @apply max-w-full rounded-lg border border-line bg-white px-3 py-1.5 text-sm; }
+.tool-card { @apply rounded-xl border border-line bg-white p-4; }

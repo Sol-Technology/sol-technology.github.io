@@ -1,0 +1,73 @@
+---
+import Base from "./Base.astro";
+import { onlineTools, products } from "../config";
+import { engineVersion } from "../lib/engine-version";
+
+interface Props {
+  slug: string;
+}
+const { slug } = Astro.props;
+const tool = onlineTools.find((t) => t.slug === slug)!;
+const p = products.find((x) => x.slug === "avroconvert")!;
+const href = (s: string) => `${p.online}${s ? `${s}/` : ""}`;
+---
+<Base title={`${tool.title} – AvroConvert Online`} description={tool.description} image="/brand/avroconvert-og-image.png" favicon="/brand/avroconvert-favicon.svg">
+  <link slot="head" rel="preload" href="/avroconvert/online/_framework/dotnet.js" as="script" crossorigin />
+
+  <section class="bg-ink text-white">
+    <div class="mx-auto max-w-6xl px-5 pt-10 pb-6">
+      <div class="flex flex-wrap items-center gap-2 text-sm text-white/60">
+        <a href="/" class="hover:text-white">soltechnology</a><span>/</span>
+        <a href="/avroconvert" class="hover:text-white">AvroConvert</a><span>/</span>
+        <a href={p.online} class="hover:text-white">Online</a>
+      </div>
+      <h1 class="mt-3 text-3xl md:text-4xl font-bold tracking-tight">{tool.title}</h1>
+      <p class="mt-3 text-white/75 max-w-3xl">{tool.description}</p>
+      <nav class="mt-6 -mx-1 flex gap-1 overflow-x-auto text-sm" aria-label="AvroConvert Online tools">
+        {onlineTools.map((t) => (
+          <a
+            href={href(t.slug)}
+            aria-current={t.slug === slug ? "page" : undefined}
+            class:list={[
+              "whitespace-nowrap rounded-md px-3 py-2 transition",
+              t.slug === slug ? "bg-white text-ink font-semibold" : "text-white/80 hover:bg-white/10",
+            ]}
+          >{t.name}</a>
+        ))}
+      </nav>
+    </div>
+  </section>
+
+  <div class="border-b border-line bg-mist">
+    <p data-engine-status data-state="loading" class="mx-auto max-w-6xl px-5 py-2 text-xs text-muted flex items-center gap-2 before:content-[''] before:inline-block before:w-2 before:h-2 before:rounded-full before:bg-solar data-[state=ready]:before:bg-emerald-500 data-[state=error]:before:bg-red-500 data-[state=error]:text-red-700">
+      Loading AvroConvert {engineVersion} (WebAssembly, about 3 MB, cached after the first visit)…
+    </p>
+  </div>
+
+  <section class="mx-auto max-w-6xl px-5 py-8">
+    <slot />
+  </section>
+
+  <section class="mx-auto max-w-6xl px-5">
+    <div class="grid gap-6 md:grid-cols-3">
+      <div class="min-w-0 rounded-2xl bg-mist p-6">
+        <h2 class="font-semibold">Your data stays here</h2>
+        <p class="mt-2 text-[15px] text-ink/80">AvroConvert runs inside this page as WebAssembly. Schemas, files and messages are processed in your browser and never uploaded. Shared links keep their content after the <code class="font-mono text-[13px]">#</code>, which browsers do not send to servers.</p>
+      </div>
+      <div class="min-w-0 rounded-2xl bg-mist p-6">
+        <h2 class="font-semibold">The same code as the library</h2>
+        <p class="mt-2 text-[15px] text-ink/80">These tools call the AvroConvert {engineVersion} NuGet package, so what you see here is what your .NET service will do.</p>
+        <pre class="mt-3 rounded-lg bg-ink text-white/90 px-3 py-2 text-[13px] font-mono overflow-x-auto"><code>dotnet add package AvroConvert</code></pre>
+        <slot name="code" />
+      </div>
+      <div class="min-w-0 rounded-2xl bg-mist p-6 flex flex-col">
+        <h2 class="font-semibold">Avro in production .NET</h2>
+        <p class="mt-2 text-[15px] text-ink/80 flex-1">Free for individuals, open source and companies under 100 people and USD 1M revenue. Larger companies use a per-organisation licence with unlimited developers.</p>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <a href="/avroconvert" class="rounded-lg bg-ink text-white px-4 py-2 text-sm font-semibold hover:bg-ink-2 transition">About AvroConvert</a>
+          <a href="/avroconvert#pricing" class="rounded-lg border border-ink px-4 py-2 text-sm font-semibold hover:bg-white transition">Pricing</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

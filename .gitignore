@@ -6,3 +6,9 @@ npm-debug.log*
 .env
 .env.*
 public/brand/concepts/
+
+# AvroConvert Online engine: built by `npm run build:wasm`
+public/avroconvert/online/_framework/
+.wasm-publish/
+tools/avroconvert-wasm/bin/
+tools/avroconvert-wasm/obj/

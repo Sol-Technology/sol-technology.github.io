@@ -1,0 +1,128 @@
+---
+import Tool from "../../../layouts/Tool.astro";
+---
+<Tool slug="kafka-message-decoder">
+  <div class="grid gap-6 lg:grid-cols-2">
+    <div>
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+        <label class="tool-label" for="message">Message value</label>
+        <div class="flex flex-wrap gap-2">
+          <button id="example" class="tool-button" type="button">Load example</button>
+          <button id="open" class="tool-button" type="button" title="A file with the raw message bytes">Open file</button>
+          <input id="file" type="file" hidden />
+        </div>
+      </div>
+      <textarea id="message" rows="6" spellcheck="false" class="w-full rounded-xl border border-line px-3 py-2 font-mono text-[13px] focus:outline-2 focus:outline-sky/50" placeholder="00 00 00 00 07 02 06 41 42 43 …   or base64: AAAAAAcCBkFCQw=="></textarea>
+      <label class="mt-2 flex items-center gap-2 text-sm"><input id="framing" type="checkbox" checked /> Confluent Schema Registry framing (magic byte 0 + 4-byte schema id)</label>
+      <p class="mt-1 text-xs text-muted break-words">Hex or base64. kcat: <code class="font-mono">kcat -C -t orders -o -1 -c 1 -f '%s' | xxd -p</code></p>
+
+      <label class="tool-label block mt-6 mb-2" for="schema">Writer schema</label>
+      <div id="schema"></div>
+      <p class="mt-2 text-xs text-muted">From the registry: <code id="curl" class="font-mono break-all">curl $SCHEMA_REGISTRY/schemas/ids/&lt;id&gt;</code> (the <code class="font-mono">schema</code> field). Without a schema only the header is decoded.</p>
+      <div id="error" class="tool-error" hidden></div>
+    </div>
+    <div class="min-w-0">
+      <dl id="header" class="grid grid-cols-3 gap-3">
+        <div class="tool-card"><dt class="text-xs text-muted">Magic byte</dt><dd id="magic" class="text-2xl font-semibold">–</dd></div>
+        <div class="tool-card"><dt class="text-xs text-muted">Schema id</dt><dd id="schema-id" class="text-2xl font-semibold">–</dd></div>
+        <div class="tool-card"><dt class="text-xs text-muted">Avro payload</dt><dd id="payload" class="text-2xl font-semibold">–</dd></div>
+      </dl>
+      <div class="mt-6 flex flex-wrap items-center justify-between gap-2 mb-2">
+        <div class="flex gap-1" role="tablist">
+          <button class="tool-button" type="button" data-tab="json" aria-selected="true">JSON</button>
+          <button class="tool-button" type="button" data-tab="encoding" aria-selected="false" title="Avro JSON encoding: unions are wrapped in their type">Avro JSON encoding</button>
+        </div>
+        <button id="copy" class="tool-button" type="button">Copy</button>
+      </div>
+      <div id="json"></div>
+      <div id="encoding" hidden></div>
+    </div>
+  </div>
+
+  <pre slot="code" class="mt-3 rounded-lg bg-ink text-white/90 px-3 py-2 text-[13px] font-mono overflow-x-auto"><code>dotnet add package SolTechnology.Avro.Kafka
+consumer.SetAvroValueDeserializer(schemaRegistry);</code></pre>
+</Tool>
+
+<script>
+  import { attempt, startEngine } from "../../../lib/avro-engine";
+  import { createEditor } from "../../../lib/editor";
+  import { $, copyText, debounce, parseBytes, readFile, showError, stored } from "../../../lib/tool-utils";
+
+  const exampleSchema = JSON.stringify({
+    type: "record", name: "Order", namespace: "shop",
+    fields: [
+      { name: "Id", type: "int" },
+      { name: "Customer", type: "string" },
+      { name: "Tags", type: { type: "array", items: "string" } },
+      { name: "Status", type: { type: "enum", name: "Status", symbols: ["New", "Paid"] } },
+      { name: "Note", type: ["null", "string"], default: null },
+    ],
+  }, null, 2);
+  const exampleMessage = "00 00 00 00 07 02 06 41 42 43 02 02 78 00 00 02 04 68 69";
+
+  const engine = await startEngine();
+  const errorBox = $("#error");
+  const message = $<HTMLTextAreaElement>("#message");
+  const framing = $<HTMLInputElement>("#framing");
+  let bytes: Uint8Array | undefined;
+
+  const jsonView = createEditor($("#json"), { language: "json", readOnly: true, minHeight: "18rem" });
+  const encodingView = createEditor($("#encoding"), { language: "json", readOnly: true, minHeight: "18rem" });
+
+  const decode = () => {
+    stored.set("kafka-schema", schema.get());
+    stored.set("kafka-message", message.value);
+    const text = message.value.trim();
+    if (!text && !bytes) return;
+    const parsed = attempt(() => (text ? parseBytes(text) : bytes!));
+    if (parsed.error) return showError(errorBox, parsed.error);
+    const result = attempt(() => JSON.parse(engine.DecodeKafkaMessage(parsed.value!, schema.get(), framing.checked)));
+    showError(errorBox, result.error);
+    const r = result.value ?? {};
+    $("#magic").textContent = r.magicByte ?? "–";
+    $("#schema-id").textContent = r.schemaId ?? "–";
+    $("#payload").textContent = r.payloadBytes !== undefined ? `${r.payloadBytes} B` : "–";
+    $("#curl").textContent = `curl $SCHEMA_REGISTRY/schemas/ids/${r.schemaId ?? "<id>"}`;
+    jsonView.set(r.json ?? "");
+    encodingView.set(r.jsonEncoding ? JSON.stringify(JSON.parse(r.jsonEncoding), null, 2) : "");
+  };
+  const decodeSoon = debounce(decode, 300);
+
+  const schema = createEditor($("#schema"), { language: "json", minHeight: "14rem", onChange: decodeSoon, onRun: decode, placeholder: '{ "type": "record", … }' });
+
+  message.addEventListener("input", () => {
+    bytes = undefined;
+    decodeSoon();
+  });
+  framing.addEventListener("change", decode);
+  $("#example").addEventListener("click", () => {
+    message.value = exampleMessage;
+    schema.set(exampleSchema);
+    framing.checked = true;
+    decode();
+  });
+  $("#open").addEventListener("click", () => $<HTMLInputElement>("#file").click());
+  $<HTMLInputElement>("#file").addEventListener("change", async (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    bytes = await readFile(file);
+    message.value = Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join(" ");
+    decode();
+  });
+  $("#copy").addEventListener("click", (e) => copyText(($("#json").hidden ? encodingView : jsonView).get(), e.currentTarget as HTMLElement));
+  document.querySelectorAll<HTMLButtonElement>("[data-tab]").forEach((button) =>
+    button.addEventListener("click", () => {
+      $("#json").hidden = button.dataset.tab !== "json";
+      $("#encoding").hidden = button.dataset.tab !== "encoding";
+      document.querySelectorAll("[data-tab]").forEach((b) => b.setAttribute("aria-selected", String(b === button)));
+    }),
+  );
+
+  message.value = stored.get("kafka-message") ?? exampleMessage;
+  schema.set(stored.get("kafka-schema") ?? exampleSchema);
+  decode();
+</script>
+
+<style>
+  [data-tab][aria-selected="true"] { background: var(--color-ink); color: white; border-color: var(--color-ink); }
+</style>
