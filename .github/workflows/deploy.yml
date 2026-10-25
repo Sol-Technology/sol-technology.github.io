@@ -19,6 +19,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # AvroConvert Online engine: tools/avroconvert-wasm published as .NET WebAssembly into public/avroconvert/online/_framework
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - run: node scripts/build-wasm.mjs
       - uses: withastro/action@v3
         with:
           node-version: 22

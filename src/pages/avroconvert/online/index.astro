@@ -1,0 +1,158 @@
+---
+import Tool from "../../../layouts/Tool.astro";
+---
+<Tool slug="">
+  <div class="grid gap-6 lg:grid-cols-2">
+    <div>
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+        <label class="tool-label" for="schema">Avro schema</label>
+        <div class="flex flex-wrap gap-2">
+          <select id="example" class="tool-select" aria-label="Load an example schema">
+            <option value="">Load example…</option>
+            <option value="order">Order (record, enum, union, logical types)</option>
+            <option value="nested">Nested records and map</option>
+            <option value="java">Java-style namespaced event</option>
+          </select>
+          <button id="format" class="tool-button" type="button">Format</button>
+          <button id="open-avro" class="tool-button" type="button" title="Read the schema from the header of an .avro file">Open .avro</button>
+          <input id="avro-file" type="file" accept=".avro,application/avro" hidden />
+        </div>
+      </div>
+      <div id="schema" data-drop></div>
+      <p class="mt-2 text-xs text-muted">Converts as you type · <kbd class="font-mono">Ctrl</kbd>/<kbd class="font-mono">⌘</kbd>+<kbd class="font-mono">Enter</kbd> · drop an <code class="font-mono">.avro</code> file on the editor to use the schema from its header</p>
+      <div id="error" class="tool-error" hidden></div>
+    </div>
+    <div>
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+        <span class="tool-label">C# model</span>
+        <div class="flex flex-wrap gap-2">
+          <button id="copy" class="tool-button" type="button">Copy</button>
+          <button id="download" class="tool-button" type="button">Download .cs</button>
+          <button id="share" class="tool-button" type="button" title="Copy a link that contains the schema">Share link</button>
+        </div>
+      </div>
+      <div id="model"></div>
+      <p class="mt-2 text-xs text-muted">Use the classes with <code class="font-mono">AvroConvert.Deserialize&lt;T&gt;(bytes)</code>. Unions with <code class="font-mono">null</code> become nullable members.</p>
+    </div>
+  </div>
+
+  <pre slot="code" class="mt-3 rounded-lg bg-ink text-white/90 px-3 py-2 text-[13px] font-mono overflow-x-auto"><code>AvroConvert.GenerateModel(schemaJson);</code></pre>
+</Tool>
+
+<script>
+  import { attempt, startEngine } from "../../../lib/avro-engine";
+  import { createEditor } from "../../../lib/editor";
+  import { $, copyText, debounce, download, readFile, sharedState, showError, stored, wireShareButton } from "../../../lib/tool-utils";
+
+  const examples: Record<string, string> = {
+    order: JSON.stringify({
+      type: "record", name: "Order", namespace: "Shop", doc: "An order placed in the web shop",
+      fields: [
+        { name: "Id", type: "long" },
+        { name: "Customer", type: "string" },
+        { name: "Status", type: { type: "enum", name: "OrderStatus", symbols: ["New", "Paid", "Shipped"] } },
+        { name: "Total", type: { type: "bytes", logicalType: "decimal", precision: 12, scale: 2 } },
+        { name: "PlacedAt", type: { type: "long", logicalType: "timestamp-millis" } },
+        { name: "TrackingId", type: { type: "string", logicalType: "uuid" } },
+        { name: "Notes", type: ["null", "string"], default: null },
+        { name: "Tags", type: { type: "array", items: "string" } },
+      ],
+    }, null, 2),
+    nested: JSON.stringify({
+      type: "record", name: "Invoice", namespace: "Billing",
+      fields: [
+        { name: "Number", type: "string" },
+        { name: "Lines", type: { type: "array", items: { type: "record", name: "Line", fields: [
+          { name: "Sku", type: "string" }, { name: "Quantity", type: "int" }, { name: "Price", type: "double" },
+        ] } } },
+        { name: "Address", type: ["null", { type: "record", name: "Address", fields: [
+          { name: "Street", type: "string" }, { name: "City", type: "string" },
+        ] }], default: null },
+        { name: "Attributes", type: { type: "map", values: "string" } },
+      ],
+    }, null, 2),
+    java: JSON.stringify({
+      type: "record", name: "PaymentCaptured", namespace: "com.example.payments.events",
+      fields: [
+        { name: "paymentId", type: { type: "string", logicalType: "uuid" } },
+        { name: "amountMinor", type: "long" },
+        { name: "currency", type: { type: "fixed", name: "Currency", size: 3 } },
+        { name: "capturedAt", type: { type: "long", logicalType: "timestamp-micros" } },
+        { name: "metadata", type: ["null", { type: "map", values: "string" }], default: null },
+      ],
+    }, null, 2),
+  };
+
+  const engine = await startEngine();
+  const errorBox = $("#error");
+  let className = "Model";
+
+  const model = createEditor($("#model"), { language: "csharp", readOnly: true, minHeight: "24rem" });
+
+  const convert = () => {
+    const schema = input.get().trim();
+    stored.set("schema", schema);
+    if (!schema) {
+      model.set("");
+      showError(errorBox);
+      return;
+    }
+    const result = attempt(() => engine.GenerateModel(schema));
+    showError(errorBox, result.error);
+    if (result.value !== undefined) {
+      model.set(result.value);
+      className = result.value.match(/public (?:class|record) (\w+)/)?.[1] ?? "Model";
+    }
+  };
+  const convertSoon = debounce(convert, 250);
+
+  const input = createEditor($("#schema"), {
+    language: "json",
+    minHeight: "24rem",
+    placeholder: '{ "type": "record", "name": "Order", "fields": [ … ] }',
+    onChange: convertSoon,
+    onRun: convert,
+  });
+
+  const fromFile = async (file: File) => {
+    const bytes = await readFile(file);
+    const schema = attempt(() => engine.InspectAvro(bytes, 0));
+    if (schema.error) return showError(errorBox, schema.error);
+    input.set(JSON.parse(schema.value!).schema);
+    convert();
+  };
+
+  $("#example").addEventListener("change", (e) => {
+    const key = (e.target as HTMLSelectElement).value;
+    if (key) {
+      input.set(examples[key]);
+      convert();
+    }
+    (e.target as HTMLSelectElement).value = "";
+  });
+  $("#format").addEventListener("click", () => {
+    const formatted = attempt(() => engine.FormatSchema(input.get()));
+    formatted.error ? showError(errorBox, formatted.error) : input.set(formatted.value!);
+  });
+  $("#open-avro").addEventListener("click", () => $<HTMLInputElement>("#avro-file").click());
+  $<HTMLInputElement>("#avro-file").addEventListener("change", (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (file) fromFile(file);
+  });
+  const dropTarget = $("[data-drop]");
+  dropTarget.addEventListener("dragover", (e) => e.preventDefault());
+  dropTarget.addEventListener("drop", (e) => {
+    const file = e.dataTransfer?.files?.[0];
+    if (file) {
+      e.preventDefault();
+      fromFile(file);
+    }
+  });
+  $("#copy").addEventListener("click", (e) => copyText(model.get(), e.currentTarget as HTMLElement));
+  $("#download").addEventListener("click", () => download(model.get(), `${className}.cs`, "text/plain"));
+  wireShareButton($("#share"), () => ({ schema: input.get() }));
+
+  const shared = await sharedState();
+  input.set(shared?.schema ?? stored.get("schema") ?? examples.order);
+  convert();
+</script>

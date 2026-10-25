@@ -1,0 +1,178 @@
+---
+import Tool from "../../../layouts/Tool.astro";
+---
+<Tool slug="avro-viewer">
+  <div id="drop" class="tool-dropzone" role="button" tabindex="0" aria-label="Open an Avro file">
+    <span class="text-ink font-semibold">Drop an .avro file here or click to choose one</span>
+    <span class="text-sm">Object container files with any codec: null, deflate, snappy, zstandard. The file is read in your browser.</span>
+    <input id="file" type="file" accept=".avro,application/avro" hidden />
+  </div>
+  <div class="mt-2 text-xs text-muted">No file at hand? <button id="sample" type="button" class="underline hover:text-ink">Open a sample file</button>.</div>
+  <div id="error" class="tool-error" hidden></div>
+
+  <div id="result" hidden class="mt-8">
+    <div class="flex flex-wrap items-baseline justify-between gap-3">
+      <h2 id="file-name" class="text-xl font-semibold break-all"></h2>
+      <div class="flex flex-wrap gap-2">
+        <button id="export-json" class="tool-button" type="button">Download JSON</button>
+        <button id="export-encoding" class="tool-button" type="button" title="Avro JSON encoding, as avro-tools tojson writes it">Download JSON encoding</button>
+        <a id="to-model" class="tool-button" href="/avroconvert/online/">Generate C# model →</a>
+      </div>
+    </div>
+    <dl class="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div class="tool-card"><dt class="text-xs text-muted">Records</dt><dd id="records" class="text-2xl font-semibold"></dd></div>
+      <div class="tool-card"><dt class="text-xs text-muted">Blocks</dt><dd id="blocks" class="text-2xl font-semibold"></dd></div>
+      <div class="tool-card"><dt class="text-xs text-muted">Codec</dt><dd id="codec" class="text-2xl font-semibold"></dd></div>
+      <div class="tool-card"><dt class="text-xs text-muted">File size</dt><dd id="size" class="text-2xl font-semibold"></dd></div>
+    </dl>
+
+    <div class="mt-6 grid gap-6 lg:grid-cols-[2fr_3fr]">
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <span class="tool-label">Schema</span>
+          <button id="copy-schema" class="tool-button" type="button">Copy</button>
+        </div>
+        <div id="schema"></div>
+        <div id="metadata-box" class="mt-4" hidden>
+          <span class="tool-label">Other metadata</span>
+          <table class="mt-2 w-full text-sm"><tbody id="metadata"></tbody></table>
+        </div>
+      </div>
+      <div class="min-w-0">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+          <span class="tool-label">Records <span id="preview-note" class="font-normal text-muted"></span></span>
+          <div class="flex gap-1" role="tablist">
+            <button class="tool-button" type="button" data-view="table" aria-selected="true">Table</button>
+            <button class="tool-button" type="button" data-view="json" aria-selected="false">JSON</button>
+          </div>
+        </div>
+        <div id="table-view" class="overflow-auto max-h-[36rem] rounded-xl border border-line">
+          <table class="w-full text-[13px] font-mono"><thead id="thead" class="sticky top-0 bg-mist"></thead><tbody id="tbody"></tbody></table>
+        </div>
+        <div id="json-view" hidden></div>
+      </div>
+    </div>
+  </div>
+
+  <pre slot="code" class="mt-3 rounded-lg bg-ink text-white/90 px-3 py-2 text-[13px] font-mono overflow-x-auto"><code>using var reader = AvroConvert.OpenDeserializer&lt;T&gt;(stream);
+while (reader.HasNext()) Process(reader.ReadNext());</code></pre>
+</Tool>
+
+<script>
+  import { attempt, startEngine } from "../../../lib/avro-engine";
+  import { createEditor, type Editor } from "../../../lib/editor";
+  import { $, copyText, download, formatBytes, readFile, showError, stored, wireDropZone } from "../../../lib/tool-utils";
+
+  const PREVIEW = 200;
+  const engine = await startEngine();
+  const errorBox = $("#error");
+  let schemaEditor: Editor | undefined;
+  let jsonEditor: Editor | undefined;
+  let current: { name: string; bytes: Uint8Array } | undefined;
+
+  const cell = (value: unknown) => {
+    const td = document.createElement("td");
+    td.className = "px-3 py-1.5 border-t border-line align-top whitespace-nowrap max-w-[24rem] overflow-hidden text-ellipsis";
+    td.textContent = value === null || value === undefined ? "null" : typeof value === "object" ? JSON.stringify(value) : String(value);
+    if (value === null || value === undefined) td.classList.add("text-muted");
+    td.title = td.textContent;
+    return td;
+  };
+
+  const renderTable = (records: unknown[]) => {
+    const thead = $("#thead");
+    const tbody = $("#tbody");
+    thead.replaceChildren();
+    tbody.replaceChildren();
+    const objects = records.every((r) => r !== null && typeof r === "object" && !Array.isArray(r));
+    const columns = objects ? [...new Set(records.flatMap((r) => Object.keys(r as object)))] : ["value"];
+    const head = document.createElement("tr");
+    for (const name of ["#", ...columns]) {
+      const th = document.createElement("th");
+      th.className = "px-3 py-2 text-left font-semibold whitespace-nowrap";
+      th.textContent = name;
+      head.append(th);
+    }
+    thead.append(head);
+    records.forEach((record, i) => {
+      const tr = document.createElement("tr");
+      tr.append(cell(i + 1));
+      tr.firstElementChild!.classList.add("text-muted");
+      for (const column of columns) tr.append(cell(objects ? (record as Record<string, unknown>)[column] : record));
+      tbody.append(tr);
+    });
+  };
+
+  const open = (name: string, bytes: Uint8Array) => {
+    const inspected = attempt(() => engine.InspectAvro(bytes, PREVIEW));
+    showError(errorBox, inspected.error);
+    $("#result").hidden = !!inspected.error;
+    if (inspected.error) return;
+
+    current = { name, bytes };
+    const info = JSON.parse(inspected.value!);
+    $("#file-name").textContent = name;
+    $("#records").textContent = Number(info.records).toLocaleString("en-US");
+    $("#blocks").textContent = Number(info.blocks).toLocaleString("en-US");
+    $("#codec").textContent = info.codec;
+    $("#size").textContent = formatBytes(info.bytes);
+    $("#preview-note").textContent = info.records > info.previewCount ? `(first ${info.previewCount} of ${Number(info.records).toLocaleString("en-US")})` : "";
+
+    schemaEditor ??= createEditor($("#schema"), { language: "json", readOnly: true, minHeight: "12rem", maxHeight: "28rem" });
+    schemaEditor.set(info.schema);
+    jsonEditor ??= createEditor($("#json-view"), { language: "json", readOnly: true, minHeight: "20rem", maxHeight: "36rem" });
+    jsonEditor.set(info.preview);
+    renderTable(JSON.parse(info.preview));
+
+    const metadata = Object.entries(info.metadata as Record<string, string>).filter(([key]) => key !== "avro.codec");
+    $("#metadata-box").hidden = metadata.length === 0;
+    $("#metadata").replaceChildren(...metadata.map(([key, value]) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td class="py-1 pr-3 font-mono text-[13px] align-top whitespace-nowrap"></td><td class="py-1 font-mono text-[13px] break-all"></td>`;
+      tr.children[0].textContent = key;
+      tr.children[1].textContent = value;
+      return tr;
+    }));
+    stored.set("viewer-schema", info.schema);
+  };
+
+  wireDropZone($("#drop"), $<HTMLInputElement>("#file"), async (file) => open(file.name, await readFile(file)));
+
+  $("#sample").addEventListener("click", () => {
+    const records = Array.from({ length: 500 }, (_, i) => ({
+      id: i + 1,
+      station: ["011990-99999", "012650-99999", "021440-99999"][i % 3],
+      temperature: Number((15.3 + Math.sin(i / 9) * 10).toFixed(1)),
+      readings: [i % 7, i % 11],
+      note: i % 5 === 0 ? "calibrated" : "",
+    }));
+    const sample = attempt(() => engine.JsonToAvro(JSON.stringify(records), "Deflate"));
+    sample.error ? showError(errorBox, sample.error) : open("sample-weather.avro", sample.value!);
+  });
+
+  document.querySelectorAll<HTMLButtonElement>("[data-view]").forEach((button) =>
+    button.addEventListener("click", () => {
+      const table = button.dataset.view === "table";
+      $("#table-view").hidden = !table;
+      $("#json-view").hidden = table;
+      document.querySelectorAll("[data-view]").forEach((b) => b.setAttribute("aria-selected", String(b === button)));
+    }),
+  );
+
+  const base = () => current!.name.replace(/\.avro$/i, "");
+  $("#export-json").addEventListener("click", () => {
+    const json = attempt(() => engine.AvroToJson(current!.bytes));
+    json.error ? showError(errorBox, json.error) : download(json.value!, `${base()}.json`, "application/json");
+  });
+  $("#export-encoding").addEventListener("click", () => {
+    const json = attempt(() => engine.AvroToJsonEncoding(current!.bytes));
+    json.error ? showError(errorBox, json.error) : download(json.value!, `${base()}.jsonl`, "application/x-ndjson");
+  });
+  $("#copy-schema").addEventListener("click", (e) => copyText(schemaEditor!.get(), e.currentTarget as HTMLElement));
+  // The schema → C# page picks up the last viewed schema.
+  $("#to-model").addEventListener("click", () => stored.set("schema", schemaEditor?.get() ?? ""));
+</script>
+
+<style>
+  [data-view][aria-selected="true"] { background: var(--color-ink); color: white; border-color: var(--color-ink); }
+</style>

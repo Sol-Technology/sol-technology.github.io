@@ -34,6 +34,7 @@ export const products = [
     nuget: "https://www.nuget.org/packages/AvroConvert",
     repo: "https://github.com/AdrianStrugala/AvroConvert",
     docs: "https://github.com/AdrianStrugala/AvroConvert/tree/master/docs",
+    online: "/avroconvert/online/",
     mark: "/brand/avroconvert-mark.svg",
     markDark: "/brand/avroconvert-mark-dark.svg",
     stats: { downloads: "5.3M+", perDay: "4.4K", since: "2019" },
@@ -94,3 +95,37 @@ export const pricing = {
     },
   ],
 };
+
+// AvroConvert Online: tools that run AvroConvert in the browser (.NET WebAssembly, tools/avroconvert-wasm).
+export const onlineTools = [
+  {
+    slug: "",
+    name: "Schema → C#",
+    title: "Avro schema to C# class generator",
+    description: "Paste an Apache Avro schema or drop an .avro file and get C# classes for AvroConvert. Runs in your browser.",
+  },
+  {
+    slug: "avro-viewer",
+    name: "Avro file viewer",
+    title: "Avro file viewer",
+    description: "Open an .avro file in the browser: schema, codec, metadata, record count and the records as JSON. Nothing is uploaded.",
+  },
+  {
+    slug: "json-to-avro",
+    name: "JSON → Avro",
+    title: "JSON to Avro converter",
+    description: "Infer an Avro schema from JSON, generate the C# model, compare sizes per codec and download the .avro file.",
+  },
+  {
+    slug: "schema-compatibility",
+    name: "Schema compatibility",
+    title: "Avro schema compatibility checker",
+    description: "Check two Avro schemas for backward, forward or full compatibility, see every breaking change, canonical form and fingerprints.",
+  },
+  {
+    slug: "kafka-message-decoder",
+    name: "Kafka message decoder",
+    title: "Kafka Avro message decoder",
+    description: "Decode a Confluent Schema Registry Kafka message: magic byte, schema id or GUID, and the Avro payload as JSON.",
+  },
+];
