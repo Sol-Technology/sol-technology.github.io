@@ -13,7 +13,7 @@ import Tool from "../../../layouts/Tool.astro";
         </div>
       </div>
       <textarea id="message" rows="6" spellcheck="false" class="w-full rounded-xl border border-line px-3 py-2 font-mono text-[13px] focus:outline-2 focus:outline-sky/50" placeholder="00 00 00 00 07 02 06 41 42 43 …   or base64: AAAAAAcCBkFCQw=="></textarea>
-      <label class="mt-2 flex items-center gap-2 text-sm"><input id="framing" type="checkbox" checked /> Confluent Schema Registry framing (magic byte 0 + 4-byte schema id)</label>
+      <label class="mt-2 flex items-center gap-2 text-sm"><input id="framing" type="checkbox" checked /> Confluent Schema Registry framing (magic byte 0 + schema id, or 1 + schema GUID)</label>
       <p class="mt-1 text-xs text-muted break-words">Hex or base64. kcat: <code class="font-mono">kcat -C -t orders -o -1 -c 1 -f '%s' | xxd -p</code></p>
 
       <label class="tool-label block mt-6 mb-2" for="schema">Writer schema</label>
@@ -24,7 +24,7 @@ import Tool from "../../../layouts/Tool.astro";
     <div class="min-w-0">
       <dl id="header" class="grid grid-cols-3 gap-3">
         <div class="tool-card"><dt class="text-xs text-muted">Magic byte</dt><dd id="magic" class="text-2xl font-semibold">–</dd></div>
-        <div class="tool-card"><dt class="text-xs text-muted">Schema id</dt><dd id="schema-id" class="text-2xl font-semibold">–</dd></div>
+        <div class="tool-card"><dt class="text-xs text-muted">Schema id</dt><dd id="schema-id" class="text-2xl font-semibold break-all">–</dd></div>
         <div class="tool-card"><dt class="text-xs text-muted">Avro payload</dt><dd id="payload" class="text-2xl font-semibold">–</dd></div>
       </dl>
       <div class="mt-6 flex flex-wrap items-center justify-between gap-2 mb-2">
@@ -80,9 +80,14 @@ consumer.SetAvroValueDeserializer(schemaRegistry);</code></pre>
     showError(errorBox, result.error);
     const r = result.value ?? {};
     $("#magic").textContent = r.magicByte ?? "–";
-    $("#schema-id").textContent = r.schemaId ?? "–";
+    const schemaRef = r.schemaId ?? r.schemaGuid;
+    $("#schema-id").textContent = schemaRef ?? "–";
+    $("#schema-id").classList.toggle("text-2xl", !r.schemaGuid);
+    $("#schema-id").classList.toggle("text-sm", !!r.schemaGuid);
     $("#payload").textContent = r.payloadBytes !== undefined ? `${r.payloadBytes} B` : "–";
-    $("#curl").textContent = `curl $SCHEMA_REGISTRY/schemas/ids/${r.schemaId ?? "<id>"}`;
+    $("#curl").textContent = r.schemaGuid
+      ? `curl $SCHEMA_REGISTRY/schemas/guids/${r.schemaGuid}`
+      : `curl $SCHEMA_REGISTRY/schemas/ids/${r.schemaId ?? "<id>"}`;
     jsonView.set(r.json ?? "");
     encodingView.set(r.jsonEncoding ? JSON.stringify(JSON.parse(r.jsonEncoding), null, 2) : "");
   };

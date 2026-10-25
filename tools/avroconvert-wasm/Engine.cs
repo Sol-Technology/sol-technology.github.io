@@ -171,14 +171,23 @@ public static partial class Engine
         var payload = message;
         if (confluentFraming)
         {
-            if (message.Length < 5 || message[0] != 0)
+            // Magic byte 0: 4-byte big-endian schema id. Magic byte 1 (Confluent clients 2.11+): 16-byte big-endian schema GUID.
+            if (message.Length >= 5 && message[0] == 0)
             {
-                throw new InvalidDataException($"Not the Confluent wire format: expected magic byte 0 and a 4-byte schema id, got {(message.Length == 0 ? "no data" : $"0x{message[0]:x2} as the first byte")}.");
+                result["magicByte"] = 0;
+                result["schemaId"] = (message[1] << 24) | (message[2] << 16) | (message[3] << 8) | message[4];
+                payload = message[5..];
             }
-
-            result["magicByte"] = message[0];
-            result["schemaId"] = (message[1] << 24) | (message[2] << 16) | (message[3] << 8) | message[4];
-            payload = message[5..];
+            else if (message.Length >= 17 && message[0] == 1)
+            {
+                result["magicByte"] = 1;
+                result["schemaGuid"] = new Guid(message.AsSpan(1, 16), bigEndian: true).ToString();
+                payload = message[17..];
+            }
+            else
+            {
+                throw new InvalidDataException($"Not the Confluent wire format: expected magic byte 0 with a 4-byte schema id or 1 with a 16-byte schema GUID, got {(message.Length == 0 ? "no data" : $"0x{message[0]:x2} as the first byte and {message.Length} bytes")}.");
+            }
         }
 
         result["payloadBytes"] = payload.Length;

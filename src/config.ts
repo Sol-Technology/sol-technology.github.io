@@ -126,6 +126,6 @@ export const onlineTools = [
     slug: "kafka-message-decoder",
     name: "Kafka message decoder",
     title: "Kafka Avro message decoder",
-    description: "Decode a Confluent Schema Registry Kafka message: magic byte, schema id and the Avro payload as JSON.",
+    description: "Decode a Confluent Schema Registry Kafka message: magic byte, schema id or GUID, and the Avro payload as JSON.",
   },
 ];

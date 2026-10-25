@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <!-- Keep in sync with the AvroConvert release shown on the site. -->
-    <PackageReference Include="AvroConvert" Version="4.0.0-preview.1" />
+    <PackageReference Include="AvroConvert" Version="4.0.0-preview.2" />
   </ItemGroup>
 
   <ItemGroup>
