@@ -88,7 +88,7 @@ app.MapPost("/orders", (Avro&lt;Order&gt; o) =&gt; ...);</pre>
           </tbody>
         </table>
       </div>
-      <p class="mt-3 text-xs text-muted">Benchmark data from the repository’s <a class="underline" href={`${p.repo}/blob/master/docs/articles/GrandeBenchmark.ImplementationsBattleRoyal-report.html`} target="_blank" rel="noopener">BenchmarkDotNet report</a>. Version 4.0 (in progress) targets .NET 10 with a rewritten allocation-free core.</p>
+      <p class="mt-3 text-xs text-muted">Benchmark data from the repository’s <a class="underline" href={`${p.repo}/blob/master/docs/articles/GrandeBenchmark.ImplementationsBattleRoyal-report.html`} target="_blank" rel="noopener">BenchmarkDotNet report</a>. Version 4.0 targets .NET 10 with a rewritten core that compiles a serializer per type and schema; <a class="underline" href={`${p.repo}/blob/master/docs/benchmarks/2026-10-08-libraries-avroconvert-vs-apache-vs-newtonsoft.md`} target="_blank" rel="noopener">current benchmarks</a>.</p>
     </div>
   </section>
 
