@@ -4,7 +4,6 @@ export const site = {
   url: "https://soltechnology.dev",
   tagline: "High-performance .NET libraries with commercial licences for companies",
   contactEmail: "contact@soltechnology.dev",
-  supportEmail: "support@soltechnology.dev",
   github: "https://github.com/sol-technology",
   // Legal entity shown in Terms (the Merchant of Record's account review requires the sole proprietor's legal name). Keep in sync with terms.md / privacy.md.
   legalName: "Adrian Strugała Sol Technology",
