@@ -186,6 +186,11 @@ if Path(CHROME).exists():
                        ("avroconvert-avatar-white.svg", product_mark(INK, SOLAR))):
         write(name, svg(1024, 1024, f'<rect width="1024" height="1024" fill="{WHITE}"/>\n  <g transform="translate(192,192) scale(6.4)">{body}</g>'))
         shot(name, OUT / name.replace(".svg", ".png"), 1024, 1024)
+    # NuGet package icon (128 px), white like the GitHub avatar (decision 27.10.2026: white backgrounds on GitHub, NuGet, Polar)
+    body = (OUT / "avroconvert-avatar-white.svg").read_text().split("\n", 1)[1].rsplit("</svg>", 1)[0]
+    write("_tmp.svg", f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="128" height="128">{body}</svg>')
+    shot("_tmp.svg", OUT / "avroconvert-nuget-128-white.png", 128, 128)
+    (OUT / "_tmp.svg").unlink()
     # opaque white high-res logos with wordmark (2×), for READMEs and docs that cannot rely on SVG fonts
     for name, src, w, h in (("logo-horizontal-white.png", "logo-horizontal.svg", 640, 120),
                             ("avroconvert-logo-horizontal-white.png", "avroconvert-logo-horizontal.svg", 760, 120),
