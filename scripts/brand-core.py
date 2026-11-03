@@ -135,7 +135,7 @@ def with_flask(parent):
 
 PACKAGES = [
     ("SolTechnology.Core", sol), ("CQRS", cqrs), ("Tale", tale), ("Logging", logging),
-    ("HTTP", http), ("Api", api), ("Authentication", auth), ("Cache", cache),
+    ("HTTP", http), ("Api", api), ("Auth", auth), ("Cache", cache),
     ("AUID", auid), ("SQL", sql), ("Blob", blob), ("MessageBus", messagebus),
     ("Hangfire", hangfire), ("Testing", flask), ("API.Testing", with_flask(api)),
     ("HTTP.Testing", with_flask(http)), ("SQL.Testing", with_flask(sql)),
