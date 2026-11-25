@@ -32,23 +32,18 @@ def chevrons(col, sw=SW):
     return "\n  ".join(out)
 
 
-def wave(col, y, sw, *, width=32, humps=2, amp=5):
-    step = width / (humps * 2)
-    d = f"M{50 - width / 2:.2f},{y:.2f} q{step / 2:.2f},{-amp:.2f} {step:.2f},0"
-    d += f" t{step:.2f},0" * (humps * 2 - 1)
-    return (f'<path d="{d}" fill="none" stroke="{col}" stroke-width="{sw}" '
-            f'stroke-linecap="round" stroke-linejoin="round"/>')
-
-
-def waves(col, *, ys=(43.5, 56.5), sw=GLYPH_SW, **kw):
-    """Water surface: the lake under the sun."""
-    return "\n  ".join(wave(col, y, sw, **kw) for y in ys)
+def layers(col, *, sw=GLYPH_SW):
+    """Stacked layers: a table built from files and snapshots. Waves were tried and dropped: they read as the sea."""
+    a = f'fill="none" stroke="{col}" stroke-width="{sw}" stroke-linecap="round" stroke-linejoin="round"'
+    return (f'<polygon points="50,35 66,43 50,51 34,43" {a}/>\n  '
+            f'<polyline points="34,51 50,59 66,51" {a}/>\n  '
+            f'<polyline points="34,59 50,67 66,59" {a}/>')
 
 
 def product_mark(chev, glyph, *, small=False):
     if small:
-        return chevrons(chev, sw=9) + "\n  " + waves(glyph, ys=(42.5, 57.5), sw=6.5, amp=5.5)
-    return chevrons(chev) + "\n  " + waves(glyph)
+        return chevrons(chev, sw=9) + "\n  " + layers(glyph, sw=5.5)
+    return chevrons(chev) + "\n  " + layers(glyph)
 
 
 def svg(body, w=100, h=100, vb="0 0 100 100"):
@@ -117,7 +112,10 @@ if Path(CHROME).exists():
     # GitHub / NuGet avatar: full-bleed square, the platform rounds it
     write("datalake-avatar.svg", svg(f'<rect width="1024" height="1024" fill="{INK}"/>\n  <g transform="translate(192,192) scale(6.4)">{product_mark(WHITE, SOLAR)}</g>', 1024, 1024, "0 0 1024 1024"))
     shot(OUT / "datalake-avatar.svg", OUT / "datalake-avatar.png", 1024, 1024)
-    # white avatar and NuGet icon (decision 27.10.2026: white backgrounds on GitHub, NuGet, Polar)
+    # NuGet package icon: dark, full bleed, same framing as AvroConvert, DateTimeZone and Core (decision 25.11.2026)
+    write("datalake-nuget-512.svg", svg(f'<rect width="512" height="512" fill="{INK}"/>\n  <g transform="translate(21,31) scale(4.7)">{product_mark(WHITE, SOLAR)}</g>', 512, 512, "0 0 512 512"))
+    shot(OUT / "datalake-nuget-512.svg", OUT / "datalake-nuget-512.png", 512, 512)
+    # white avatar for GitHub and Polar (decision 27.10.2026); the white NuGet icon is kept but packages use the navy tile
     white = f'<rect width="1024" height="1024" fill="{WHITE}"/>\n  <g transform="translate(192,192) scale(6.4)">{product_mark(INK, SOLAR)}</g>'
     write("datalake-avatar-white.svg", svg(white, 1024, 1024, "0 0 1024 1024"))
     shot(OUT / "datalake-avatar-white.svg", OUT / "datalake-avatar-white.png", 1024, 1024)

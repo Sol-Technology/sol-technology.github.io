@@ -7,6 +7,7 @@
   <polyline points="43.18,80.24 30.91,89.64 30.61,74.19" fill="none" stroke="#0B1F33" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
   <polyline points="22.10,63.52 7.10,59.79 19.00,49.92" fill="none" stroke="#0B1F33" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
   <polyline points="22.04,36.62 15.60,22.57 30.73,25.72" fill="none" stroke="#0B1F33" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M34.00,43.50 q4.00,-5.00 8.00,0 t8.00,0 t8.00,0 t8.00,0" fill="none" stroke="#F59E0B" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M34.00,56.50 q4.00,-5.00 8.00,0 t8.00,0 t8.00,0 t8.00,0" fill="none" stroke="#F59E0B" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <polygon points="50,35 66,43 50,51 34,43" fill="none" stroke="#F59E0B" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="34,51 50,59 66,51" fill="none" stroke="#F59E0B" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="34,59 50,67 66,59" fill="none" stroke="#F59E0B" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/></g>
 </svg>
